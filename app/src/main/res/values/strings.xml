@@ -1,0 +1,184 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="no_permission">Permissions not granted</string>
+    <string name="wait" >...</string>
+    <string name="enter_password">Please enter correct username or password</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="no_internet">Please check your internet connection</string>
+
+    <string name="navigation_drawer_open">drawer open</string>
+    <string name="navigation_drawer_close">drawer close</string>
+    <string name="navigation_drawer_login">Sing in</string>
+    <string name="navigation_drawer_sing_up">Sing up</string>
+    <string name="navigation_drawer_profile">Profile</string>
+
+    <string name="login_register_text">Sing up</string>
+    <string name="login_username_hint">Login</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_password_repeat_hint">Confirm password</string>
+    <string name="sing_in">Sing in</string>
+
+    <string name="comment_btn">Submit review</string>
+    <string name="comment_prefix">at</string>
+    <string name="comment_error_sing_in">You should sign in first</string>
+    <string name="comment_error_rate">Please set product rating</string>
+    <string name="comment_error_dialog_title">Error!</string>
+    <string name="comment_error_dialog_sing_in">Error!</string>
+    <string name="comment_posted">Review posted</string>
+    <string name="comment_hint">Type your review…</string>
+
+
+
+    <string name="login_ok_title">Main menu</string>
+    <string name="login_ok_scan_btn">Scan ticket</string>
+    <string name="login_ok_sport_btn">Sportsbetting</string>
+    <string name="login_ok_jackpot_btn">Jackpot</string>
+    <string name="login_ok_deposits_btn">Deposits</string>
+    <string name="login_ok_withdrawal_btn">Withdrawal</string>
+    <string name="logout_btn">Logout</string>
+
+    <string name="scan_title">Please scan ticket</string>
+    <string name="scan_payout_success">Payout success</string>
+    <string name="scan_payout_play_player">!! Please play player !!</string>
+    <string name="scan_detail_type">TYPE:</string>
+    <string name="scan_ticket_details">Ticket details</string>
+    <string name="scan_enter_code">Enter code</string>
+
+    <string name="back_btn">Back</string>
+    <string name="home_btn">Home</string>
+
+    <string name="winner_head">Winner</string>
+    <string name="winner_head_no_winner">No winner</string>
+    <string name="winner_head_pending">Pending ticket</string>
+    <string name="winner_created">Created:</string>
+    <string name="winner_type">Type:</string>
+    <string name="winner_ticket_id">Ticket id:</string>
+    <string name="winner_payout_btn">Payout ticket</string>
+    <string name="winner_details_btn">Create ticket</string>
+    <string name="winner_wrong_ticket_id">Wrong ticket id</string>
+    <string name="winner_stake">Stake:</string>
+
+    <string name="jackpot_jackpot_title">Jackpot:</string>
+    <string name="jackpot_round_title">Round:</string>
+    <string name="jackpot_last_entry_title">Last entry:</string>
+    <string name="jackpot_ticket_price_title">TICKET PRICE:</string>
+    <string name="jackpot_draw_btn">Draw</string>
+    <string name="jackpot_create_ticket_btn">Create ticket</string>
+    <string name="jackpot_alternative_game">Alternative Game</string>
+    <string name="jackpot_alternative_game_alt">Alt</string>
+
+    <string name="jackpot_confirmation_title">Jackpot confirmation</string>
+    <string name="jackpot_confirmation_ticket_price">Ticket price:</string>
+    <string name="jackpot_confirmation_ticket_number">TICKET NUMBER:</string>
+    <string name="jackpot_confirmation_ticket_code">Ticket code:</string>
+    <string name="jackpot_confirmation_ticket_created">Ticket created:</string>
+    <string name="jackpot_confirmation_bet_details">BET DETAILS</string>
+    <string name="jackpot_confirmation_home">Home</string>
+    <string name="jackpot_confirmation_draw">Draw</string>
+    <string name="jackpot_confirmation_away">Away</string>
+    <string name="jackpot_game">Game</string>
+    <string name="jackpot_game_code">CODE:</string>
+    <string name="jackpot_game_date_time">DATE/TIME:</string>
+
+    <string name="deposit_title">Find player</string>
+    <string name="deposit_mob_num">Mobile number:</string>
+    <string name="deposit_found_player">Found player</string>
+    <string name="deposit_player_name">NAME:</string>
+    <string name="deposit_amount">Amount</string>
+    <string name="deposit_amount_text">AMOUNT:</string>
+    <string name="deposit_deposit">DEPOSIT</string>
+    <string name="deposit_confirm_deposit">Confirm deposit</string>
+    <string name="deposit_confirm">Confirm</string>
+    <string name="deposit_success">Deposit success</string>
+    <string name="deposit_successful">Deposit is successful</string>
+    <string name="deposit_instantly">Player account is instantly updated!</string>
+    <string name="deposit_no_found">No player found</string>
+    <string name="deposit_phone_number_hint" >%dXXXXXX</string>
+    <string name="withdrawal_funds">Withdrawal funds</string>
+    <string name="withdrawal">WITHDRAWAL</string>
+    <string name="withdrawal_number">NUMBER:</string>
+    <string name="withdrawal_time">Time:</string>
+    <string name="withdrawal_id">ID:</string>
+    <string name="withdrawal_text_bottom_looking">LOOKING FOR A RELIABLE AGENT SYSTEM?</string>
+    <string name="withdrawal_text_bottom_contact">CONTACT US TODAY FOR MORE INFORMATION</string>
+    <string name="withdrawal_site">WWW.BETOO.CM</string>
+    <string name="withdrawal_pin">Withdrawal pin</string>
+    <string name="withdrawal_hint_pin">pin</string>
+    <string name="withdrawal_confirm">Confirm withdrawal</string>
+    <string name="withdrawal_success">Withdrawal success</string>
+    <string name="withdrawal_successful">Withdrawal is successful</string>
+    <string name="withdrawal_error_pin">Wrong withdrawal pin</string>
+
+    <string name="sportbetting_title">Sportsbetting</string>
+    <string name="sportbetting_featured_events">Featured events</string>
+    <string name="sportbetting_today">Today</string>
+    <string name="sportbetting_todat_events">Today\'s events</string>
+    <string name="sportbetting_tomorrow_events">Tomorrow\'s events</string>
+    <string name="sportbetting_starting_soon_events">Starting soon events</string>
+    <string name="sportbetting_tomorrow">Tomorrow</string>
+    <string name="sportbetting_lookup_booking">Lookup booking</string>
+    <string name="sportbetting_lookup">Lookup</string>
+    <string name="sportbetting_event_id">Event id</string>
+    <string name="sportbetting_market_id">Market id</string>
+    <string name="sportbetting_add_bet">Add bet</string>
+    <string name="sportbetting_betslip">Betslip</string>
+    <string name="sportbetting_stake">Stake</string>
+    <string name="sportbetting_total_odds">Total odds:</string>
+    <string name="sportbetting_potential_win">POTENTIAL WIN:</string>
+    <string name="sportbetting_bonus">BONUS:</string>
+    <string name="sportbetting_total_win">Total win:</string>
+    <string name="sportbetting_tax">Tax 10%:</string>
+    <string name="sportbetting_payout">Payout:</string>
+    <string name="sportbetting_place_bet">Place bet</string>
+    <string name="sportbetting_bet">Bet:</string>
+    <string name="sportbetting_odds">ODDS:</string>
+    <string name="sportbetting_back"><u>BACK</u></string>
+    <string name="sportbetting_clear_bets">Clear all bets</string>
+    <string name="sportbetting_enter_code">Enter booking code:</string>
+    <string name="sportbetting_draw">draw</string>
+    <string name="sportbetting_place">Place:</string>
+    <string name="sportbetting_place_">PLACE</string>
+    <string name="sportbetting_potint_tax">POTENTIAL TAX:</string>
+    <string name="sportbetting_winning">NET WINNING:</string>
+
+    <string name="lottery_id">ROUND ID:</string>
+    <string name="lottery_next_draw">Next draw:</string>
+    <string name="lottery_bet_btn">Place bet</string>
+    <string name="lottery_head">LOTTERY 5/50</string>
+    <string name="lottery_numbers_head">Select 5 numbers</string>
+    <string name="lottery_your_numbers">YOUR NUMBERS:</string>
+    <string name="lottery">Lottery</string>
+    <string name="lottery_autopick">Auto pick</string>
+    <string name="lottery_play">Play again</string>
+    <string name="lottery_clear">Clear</string>
+
+    <string name="pick_numbers_head">Select 3 numbers</string>
+    <string name="pick_draw">Draw every 15 minutes</string>
+    <string name="pick">PICK 3</string>
+    <string name="pick_draw_print">DRAW:</string>
+    <string name="pick_print_winning_num">WINNING NUMBERS</string>
+    <string name="pick_print_multiply_stake">MULTIPLY BY YOUR STAKE</string>
+
+    <!-- Print -->
+    <string name="print_text">Print Text</string>
+    <string name="printing_wait">Printing, please wait…</string>
+    <string name="input_print_data">Please input print data</string>
+    <string name="sure">sure</string>
+    <string name="watting">Please wait while checking driver version</string>
+    <string name="noPaper">No paper</string>
+    <string name="noPaperNotice">No paper, please put paper in and retry</string>
+    <string name="LowBattery">Low battery, please connect the charger!</string>
+    <string name="overTemp">over temp!</string>
+    <string name="dialog_comfirm">Confirm</string>
+    <string name="operation_result">Result</string>
+    <string name="print">Print</string>
+    <string name="idcard_czz">Proceeding…</string>
+    <string name="error_device">Change the device like a printer</string>
+    <string name="unidentified_error">Unidentified error</string>
+    <string name="printer_off_error">Please, make sure, the printer is on</string>
+    <string name="enter_bet_code">Enter bet code</string>
+    <string name="enter_market_code">Enter market code:</string>
+    <string name="event_code">Event code:</string>
+    <string name="go_to_betslip">Go to betslip</string>
+
+</resources>
