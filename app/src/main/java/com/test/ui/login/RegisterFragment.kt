@@ -40,7 +40,7 @@ class RegisterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.also {
-            it.include_toolbar.visibility = View.GONE
+            it.main_toolbar.visibility = View.GONE
             registerLogin.requestFocus()
         }
 

@@ -27,7 +27,18 @@
     <string name="comment_posted">Review posted</string>
     <string name="comment_hint">Type your review…</string>
 
+    <string name="profile_hint_name">Name</string>
+    <string name="profile_name_title">Enter your name</string>
+    <string name="profile_hint_surname">Surname</string>
+    <string name="profile_save_btn">Save</string>
+    <string name="profile_add_photo_btn">Add photo</string>
+    <string name="profile_add_change_btn">Change photo</string>
+    <string name="profile_surname_title">Enter your surname</string>
 
+    <string name="dialog_choose_text">Choose a photo from the gallery or take it on camera?</string>
+    <string name="dialog_choose_title">Where to get the photo?</string>
+    <string name="dialog_choose_gallery_btn">Gallery</string>
+    <string name="dialog_choose_camera_btn">Camera</string>
 
     <string name="login_ok_title">Main menu</string>
     <string name="login_ok_scan_btn">Scan ticket</string>

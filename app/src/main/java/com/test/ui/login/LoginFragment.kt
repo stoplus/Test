@@ -41,7 +41,7 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.also {
-            it.include_toolbar.visibility = View.GONE
+            it.main_toolbar.visibility = View.GONE
             login_user_name.requestFocus()
         }
 

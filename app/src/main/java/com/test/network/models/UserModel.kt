@@ -17,5 +17,7 @@ class UserModel(
     var lastName: String = "",
 
     @SerializedName("email")
-    var email: String = ""
+    var email: String = "",
+
+    var photo: String = ""
 )
