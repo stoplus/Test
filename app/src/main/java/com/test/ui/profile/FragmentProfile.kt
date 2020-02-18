@@ -24,6 +24,7 @@ import com.test.utils.withAllPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import kotlinx.android.synthetic.main.container_for_activity.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.jetbrains.anko.support.v4.toast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
@@ -99,26 +100,21 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun saveProfile() {
+        viewModel.saveProfile(
+            UserModel(
+                firstName = profile_name.text.toString(),
+                lastName = profileSurname.text.toString(),
+                photo = currentPhotoPath
+            )
+        )
+        toast(resources.getString(R.string.profile_profile_saved))
     }
 
     private fun getImage() = withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-        //        val photoPickerIntent = Intent(Intent.ACTION_PICK)
-//        photoPickerIntent.type = "image/*"
-//        startActivityForResult(photoPickerIntent, REQUEST_CODE_STORAGE)
-
-        val activity = activity ?: return@withAllPermissions
-        val file = File.createTempFile("photo", ".jpg", activity.filesDir)
-        currentPhotoPath = "file:${file.absolutePath}"
-        startActivityForResult(Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-//            putExtra(
-//                MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
-//                    activity,
-//                    BuildConfig.APPLICATION_ID + ".provider",
-//                    file
-//                )
-//            )
-        }, REQUEST_CODE_STORAGE)
+        startActivityForResult(
+            Intent(Intent.ACTION_PICK).apply { type = "image/*" },
+            REQUEST_CODE_STORAGE
+        )
     }
 
     private fun makePhoto() =
@@ -151,49 +147,42 @@ class FragmentProfile : BaseFragment() {
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .into(profilePhoto)
                     }
-                    saveProfile()
                 }
                 REQUEST_CODE_STORAGE -> {
-//                    context?.also {
-//                        Glide.with(it).load(data?.data)
-//                            .fitCenter()
-//                            .circleCrop()
-//                            .error(R.drawable.default_photo)
-//                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                            .into(profilePhoto)
-//                    }
-
-
-
-                    val selectedImage: Uri = data!!.data!!
-                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor = activity!!.contentResolver.query(selectedImage, filePathColumn, null, null, null)!!
-                    cursor.moveToFirst()
-                    val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-                    currentPhotoPath = cursor.getString(columnIndex)
-                    cursor.close()
-
-//                    imageView.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString))
-                    context?.also {
-                        Glide.with(it).load(currentPhotoPath)
-                            .fitCenter()
-                            .circleCrop()
-                            .error(R.drawable.default_photo)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .into(profilePhoto)
-                        saveProfile()
-
-                    }
-
-                    viewModel.saveProfile(
-                        UserModel(
-                            firstName = profile_name.text.toString(),
-                            lastName = profileSurname.text.toString(),
-                            photo = currentPhotoPath
+                    data?.data?.also {
+                        val photoFile = File(getRealPathFromURI(it))
+                        val uri = FileProvider.getUriForFile(
+                            context!!, BuildConfig.APPLICATION_ID + ".provider",
+                            photoFile
                         )
-                    )
+                        currentPhotoPath = uri.toString()
+                        context?.also { cont ->
+                            Glide.with(cont).load(currentPhotoPath)
+                                .fitCenter()
+                                .circleCrop()
+                                .error(R.drawable.default_photo)
+                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                                .into(profilePhoto)
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun getRealPathFromURI(contentURI: Uri): String {
+        val result: String
+        var cursor: Cursor? = null
+        activity?.also {
+            cursor = it.contentResolver.query(contentURI, null, null, null, null)
+        }
+        result = if (cursor == null) {
+            contentURI.path!!
+        } else {
+            cursor!!.moveToFirst()
+            cursor!!.getString(cursor!!.getColumnIndex(MediaStore.Files.FileColumns.DATA))
+        }
+        cursor?.close()
+        return result
     }
 }

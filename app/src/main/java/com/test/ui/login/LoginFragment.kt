@@ -53,6 +53,8 @@ class LoginFragment : BaseFragment() {
                 RegisterFragment.TAG
             )
         }
+        login_user_name.setText("ss")
+        login_password.setText("ss")
     }
 
     private fun login() {
