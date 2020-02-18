@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.test.network.ApiInterface
 import com.test.network.models.ProductModel
 import com.test.network.models.ReviewModel
+import com.test.network.models.UserModel
 import com.test.network.models.request.PostReviewRequest
 import com.test.network.models.response.LoginResponse
 import com.test.network.models.response.PostReviewResponse
@@ -63,6 +64,12 @@ class ApiManager(
         prefManager.saveToken("")
         isLoggedLiveData.postValue(false)
     }
+
+    fun saveProfile(user: UserModel) {
+        prefManager.saveProfile(user)
+    }
+
+    fun getProfile() = prefManager.getProfile()
 
     fun postReview(post: PostReviewRequest, productId: Int): Single<PostReviewResponse> {
         return api.postReview(

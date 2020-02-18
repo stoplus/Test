@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="4dp"
-    android:background="@drawable/frame_black"
+    android:background="@drawable/frame_black_with_color"
     android:padding="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +20,7 @@
             android:id="@+id/rateDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2013-12-19T07:59:56.809Z"
+            tools:text="2013-12-19T07:59:56.809Z"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +40,7 @@
         android:id="@+id/rateComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jddsfsdflsodhfojiaso;dijv;aon;ov;a;"
+        tools:text="text"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

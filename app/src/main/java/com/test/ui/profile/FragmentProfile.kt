@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.test.BuildConfig
 import com.test.R
 import com.test.base.BaseFragment
+import com.test.network.models.UserModel
 import com.test.ui.MainViewModel
 import com.test.utils.clickBtn
 import com.test.utils.withAllPermissions
@@ -61,14 +62,22 @@ class FragmentProfile : BaseFragment() {
             profile_name.requestFocus()
         }
 
+        setDataUser()
+    }
+
+    private fun setDataUser() {
+        val user = viewModel.getProfile()
+        val uri: Uri = Uri.parse(user.photo)
         context?.also {
-            Glide.with(it).load(R.drawable.default_photo)
+            Glide.with(it).load(uri)
                 .fitCenter()
                 .circleCrop()
                 .error(R.drawable.default_photo)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(profilePhoto)
         }
+        profile_name.setText(user.firstName)
+        profileSurname.setText(user.lastName)
     }
 
     private fun choosePathForPhoto() {
@@ -102,14 +111,14 @@ class FragmentProfile : BaseFragment() {
         currentPhotoPath = "file:${file.absolutePath}"
         startActivityForResult(Intent(Intent.ACTION_PICK).apply {
             type = "image/*"
-            putExtra(
-                MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
-                    activity,
-                    BuildConfig.APPLICATION_ID + ".provider",
-                    file
-                )
-            )
-        }, REQUEST_CODE_PHOTO)
+//            putExtra(
+//                MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+//                    activity,
+//                    BuildConfig.APPLICATION_ID + ".provider",
+//                    file
+//                )
+//            )
+        }, REQUEST_CODE_STORAGE)
     }
 
     private fun makePhoto() =
@@ -145,6 +154,26 @@ class FragmentProfile : BaseFragment() {
                     saveProfile()
                 }
                 REQUEST_CODE_STORAGE -> {
+//                    context?.also {
+//                        Glide.with(it).load(data?.data)
+//                            .fitCenter()
+//                            .circleCrop()
+//                            .error(R.drawable.default_photo)
+//                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+//                            .into(profilePhoto)
+//                    }
+
+
+
+                    val selectedImage: Uri = data!!.data!!
+                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor = activity!!.contentResolver.query(selectedImage, filePathColumn, null, null, null)!!
+                    cursor.moveToFirst()
+                    val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+                    currentPhotoPath = cursor.getString(columnIndex)
+                    cursor.close()
+
+//                    imageView.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString))
                     context?.also {
                         Glide.with(it).load(currentPhotoPath)
                             .fitCenter()
@@ -155,6 +184,14 @@ class FragmentProfile : BaseFragment() {
                         saveProfile()
 
                     }
+
+                    viewModel.saveProfile(
+                        UserModel(
+                            firstName = profile_name.text.toString(),
+                            lastName = profileSurname.text.toString(),
+                            photo = currentPhotoPath
+                        )
+                    )
                 }
             }
         }
