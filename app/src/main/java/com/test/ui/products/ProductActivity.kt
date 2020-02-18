@@ -49,8 +49,15 @@ class ProductActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         viewModel.isLoggedLiveData.observe(this, Observer {
             navigationView.menu.getItem(0).isVisible = !it
+            navigationView.menu.getItem(1).isVisible = it
             navigationView.menu.getItem(2).isVisible = it
         })
+
+        val logged = viewModel.isLogged()
+        navigationView.menu.getItem(0).isVisible = !logged
+        navigationView.menu.getItem(1).isVisible = logged
+        navigationView.menu.getItem(2).isVisible = logged
+
 
         showFragment(
             ProductFragment.newInstance(),
@@ -62,7 +69,7 @@ class ProductActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_login -> LoginActivity.start(this)
-            R.id.nav_sing_up -> Log.d("", "")
+            R.id.nav_logout -> viewModel.logout()
             R.id.nav_profile -> showFragment(
                 FragmentProfile.newInstance(), R.id.container_for_fragments, FragmentProfile.TAG
             )

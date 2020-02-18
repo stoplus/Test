@@ -39,7 +39,6 @@ class MainViewModel(
 
     fun logout(){
         apiManager.logout()
-        isLoggedLiveData.value = false
     }
 
     fun postReview(post: PostReviewRequest, productId: Int): Single<PostReviewResponse> {

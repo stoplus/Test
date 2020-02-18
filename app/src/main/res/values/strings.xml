@@ -9,7 +9,7 @@
     <string name="navigation_drawer_open">drawer open</string>
     <string name="navigation_drawer_close">drawer close</string>
     <string name="navigation_drawer_login">Sing in</string>
-    <string name="navigation_drawer_sing_up">Sing up</string>
+    <string name="navigation_drawer_logout">Logout</string>
     <string name="navigation_drawer_profile">Profile</string>
 
     <string name="login_register_text">Sing up</string>

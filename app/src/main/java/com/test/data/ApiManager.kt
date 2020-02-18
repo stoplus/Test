@@ -19,7 +19,7 @@ class ApiManager(
     private val api: ApiInterface
 ) {
 
-    var isLoggedLiveData = MutableLiveData<Boolean>().apply { value = false }
+    var isLoggedLiveData = MutableLiveData<Boolean>()
     var productsList = MutableLiveData<MutableList<ProductModel>>()
 
     fun register(login: String, pass: String): Single<LoginResponse> {
@@ -62,6 +62,7 @@ class ApiManager(
 
     fun logout() {
         prefManager.saveToken("")
+        prefManager.saveProfile(UserModel())
         isLoggedLiveData.postValue(false)
     }
 

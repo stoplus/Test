@@ -138,16 +138,7 @@ class FragmentProfile : BaseFragment() {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_PHOTO -> {
-                    context?.also {
-                        Glide.with(it).load(currentPhotoPath)
-                            .fitCenter()
-                            .circleCrop()
-                            .error(R.drawable.default_photo)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .into(profilePhoto)
-                    }
-                }
+                REQUEST_CODE_PHOTO -> showImage()
                 REQUEST_CODE_STORAGE -> {
                     data?.data?.also {
                         val photoFile = File(getRealPathFromURI(it))
@@ -156,17 +147,21 @@ class FragmentProfile : BaseFragment() {
                             photoFile
                         )
                         currentPhotoPath = uri.toString()
-                        context?.also { cont ->
-                            Glide.with(cont).load(currentPhotoPath)
-                                .fitCenter()
-                                .circleCrop()
-                                .error(R.drawable.default_photo)
-                                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                                .into(profilePhoto)
-                        }
+                        showImage()
                     }
                 }
             }
+        }
+    }
+
+    private fun showImage() {
+        context?.also {
+            Glide.with(it).load(currentPhotoPath)
+                .fitCenter()
+                .circleCrop()
+                .error(R.drawable.default_photo)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(profilePhoto)
         }
     }
 

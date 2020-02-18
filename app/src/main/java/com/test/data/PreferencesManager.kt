@@ -32,6 +32,4 @@ class PreferencesManager(private val pref: SharedPreferences) {
             it.putString(PHOTO_USER, user.photo)
         }.apply()
     }
-
-
 }
