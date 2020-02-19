@@ -4,5 +4,5 @@
 
     <dimen name="small_btn_height">35dp</dimen>
 
-    <dimen name="edit_field_login_width">180dp</dimen>
+    <dimen name="edit_field_login_width">210dp</dimen>
 </resources>
