@@ -50,5 +50,4 @@ class MainViewModel(
     }
 
     fun getProfile()= apiManager.getProfile()
-
 }

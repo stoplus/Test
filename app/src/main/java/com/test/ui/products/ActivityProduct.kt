@@ -1,15 +1,13 @@
 package com.test.ui.products
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import com.google.android.material.navigation.NavigationView
 import com.test.R
 import com.test.base.BaseActivity

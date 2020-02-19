@@ -2,8 +2,6 @@ package com.test.base
 
 import android.content.Context
 import android.content.Intent
-import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
@@ -28,18 +26,6 @@ abstract class BaseFragment : Fragment() {
         baseActivity.hideLoading()
     }
 
-    fun popBackStack() {
-        activity?.supportFragmentManager?.popBackStack()
-    }
-
-    fun clearStack() {
-        activity?.supportFragmentManager?.also { fm ->
-            for (i in 0 until fm.backStackEntryCount) {
-                fm.popBackStack()
-            }
-        }
-    }
-
     fun showFragment(fragment: BaseFragment, idContainer: Int, tag: String) {
         activity!!.supportFragmentManager
             .beginTransaction()
@@ -53,27 +39,6 @@ abstract class BaseFragment : Fragment() {
             .beginTransaction()
             .add(idContainer, fragment)
             .addToBackStack(tag)
-            .commit()
-    }
-
-    protected fun replaceFragmentInIdContent(fragment: BaseFragment) {
-        activity!!.supportFragmentManager
-            .beginTransaction()
-            .replace(android.R.id.content, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    protected fun replaceFragmentWithSharedElement(
-        fragment: BaseFragment,
-        dressingRoomContainer: Int,
-        tag: String,
-        view: View
-    ) {
-        activity!!.supportFragmentManager.beginTransaction()
-            .replace(dressingRoomContainer, fragment)
-            .addToBackStack(tag)
-            .addSharedElement(view, ViewCompat.getTransitionName(view)!!)
             .commit()
     }
 
