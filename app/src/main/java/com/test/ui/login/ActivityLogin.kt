@@ -6,17 +6,13 @@ import android.os.Bundle
 import android.view.View
 import com.test.R
 import com.test.base.BaseActivity
-import com.test.ui.MainViewModel
-import kotlinx.android.synthetic.main.container_for_activity.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.android.synthetic.main.view_toolbar.*
 
-class LoginActivity : BaseActivity() {
-
-    private val viewModel by viewModel<MainViewModel>()
+class ActivityLogin : BaseActivity() {
 
     companion object {
         fun start(activity: Activity) {
-            val intent = Intent(activity, LoginActivity::class.java)
+            val intent = Intent(activity, ActivityLogin::class.java)
             activity.startActivity(intent)
         }
     }
@@ -25,15 +21,15 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.container_for_activity)
 
-        main_toolbar.visibility = View.GONE
+        catalog_toolbar.visibility = View.GONE
 
-        showFragment(LoginFragment.newInstance(), R.id.container_for_fragments, LoginFragment.TAG)
+        showFragment(FragmentLogin.newInstance(), R.id.container_for_fragments, FragmentLogin.TAG)
     }
 
     override fun onBackPressed() {
         val listFragments = supportFragmentManager.fragments.filter { frag -> frag.isVisible }
         val fragment = listFragments[listFragments.size - 1]
-        if (fragment is LoginFragment) {
+        if (fragment is FragmentLogin) {
             finish()
         } else {
             super.onBackPressed()

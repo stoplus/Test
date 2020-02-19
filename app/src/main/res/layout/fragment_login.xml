@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@drawable/login_background">
 
     <EditText
         android:id="@+id/login_user_name"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_black"
+        android:background="@drawable/frame_black_background_white"
         android:hint="@string/login_username_hint"
         android:inputType="text"
         android:maxLength="17"
@@ -22,10 +22,10 @@
 
     <EditText
         android:id="@+id/login_password"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/frame_black"
+        android:background="@drawable/frame_black_background_white"
         android:hint="@string/login_password_hint"
         android:inputType="textPassword"
         android:maxLength="17"
@@ -39,8 +39,8 @@
     <Button
         android:id="@+id/login_btn"
         style="@style/ButtonGreenTheme"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/big_btn_width"
+        android:layout_height="@dimen/big_btn_height"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="@string/sing_in"

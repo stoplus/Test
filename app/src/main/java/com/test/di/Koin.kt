@@ -26,20 +26,10 @@ private val viewModelModule = module {
 }
 
 private val networkModule = module {
-    single(named(MARGINFOX)) {
+    single(named(TEST_API)) {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(get<OkHttpClient.Builder>()
-//                .addInterceptor {
-//                    it.proceed(
-//                        it.request().newBuilder().url(
-//                            it.request().url().newBuilder().addQueryParameter(
-//                                "instance",
-//                                INSTANCE_MARGINFOX
-//                            ).build()
-//                        ).build()
-//                    )
-//                }
                 .addInterceptor(get())
                 .build())
             .addConverterFactory(GsonConverterFactory.create(Gson()))
@@ -66,12 +56,11 @@ private val dataModule = module {
     single { PreferencesManager(get()) }
     single { ApiManager(get(), get(), get()) }
     single { ModelRepository() }
-    factory { TokenAuthenticator(get(), get(), get()) }
     single { OkHttpClient.Builder() }
 }
 
 private val apiModule = module {
-    single { get<Retrofit>(named(MARGINFOX)).create(ApiInterface::class.java) }
+    single { get<Retrofit>(named(TEST_API)).create(ApiInterface::class.java) }
 }
 
 

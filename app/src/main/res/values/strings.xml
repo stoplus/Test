@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">Test</string>
-    <string name="no_permission">Permissions not granted</string>
-    <string name="wait" >...</string>
-    <string name="enter_password">Please enter correct username or password</string>
-    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
     <string name="no_internet">Please check your internet connection</string>
 
     <string name="navigation_drawer_open">drawer open</string>
@@ -17,6 +13,9 @@
     <string name="login_password_hint">Password</string>
     <string name="login_password_repeat_hint">Confirm password</string>
     <string name="sing_in">Sing in</string>
+    <string name="login_error_enter_login">Enter login</string>
+    <string name="login_error_enter_password">Enter password</string>
+    <string name="login_error_password_not_match">Password does not match</string>
 
     <string name="comment_btn">Submit review</string>
     <string name="comment_prefix">at</string>
@@ -26,6 +25,7 @@
     <string name="comment_error_dialog_sing_in">Error!</string>
     <string name="comment_posted">Review posted</string>
     <string name="comment_hint">Type your review…</string>
+    <string name="comment_review_title">Reviews</string>
 
     <string name="profile_hint_name">Name</string>
     <string name="profile_name_title">Enter your name</string>
@@ -34,29 +34,12 @@
     <string name="profile_add_photo_btn">Add photo</string>
     <string name="profile_add_change_btn">Change photo</string>
     <string name="profile_surname_title">Enter your surname</string>
-    <string name="profile_profile_saved">Profile saved</string>
+    <string name="profile_saved">Profile saved</string>
+    <string name="profile_error_saved">You must fill in something!</string>
 
     <string name="dialog_choose_text">Choose a photo from the gallery or take it on camera?</string>
     <string name="dialog_choose_title">Where to get the photo?</string>
     <string name="dialog_choose_gallery_btn">Gallery</string>
     <string name="dialog_choose_camera_btn">Camera</string>
-
-    <string name="login_ok_title">Main menu</string>
-    <string name="login_ok_scan_btn">Scan ticket</string>
-    <string name="login_ok_sport_btn">Sportsbetting</string>
-    <string name="login_ok_jackpot_btn">Jackpot</string>
-    <string name="login_ok_deposits_btn">Deposits</string>
-    <string name="login_ok_withdrawal_btn">Withdrawal</string>
-    <string name="logout_btn">Logout</string>
-
-    <string name="scan_title">Please scan ticket</string>
-    <string name="scan_payout_success">Payout success</string>
-    <string name="scan_payout_play_player">!! Please play player !!</string>
-    <string name="scan_detail_type">TYPE:</string>
-    <string name="scan_ticket_details">Ticket details</string>
-    <string name="scan_enter_code">Enter code</string>
-
-    <string name="back_btn">Back</string>
-    <string name="home_btn">Home</string>
 
 </resources>

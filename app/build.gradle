@@ -64,10 +64,11 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    //permission
     implementation 'com.karumi:dexter:5.0.0'
 
     //autodispose
     implementation 'com.uber.autodispose:autodispose-ktx:1.2.0'
-    implementation 'com.uber.autodispose:autodispose-android-ktx:1.2.0'
+
     implementation 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.2.0'
 }

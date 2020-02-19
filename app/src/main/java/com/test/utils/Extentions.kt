@@ -1,13 +1,7 @@
 package com.test.utils
 
 import android.content.Context
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import com.jakewharton.rxbinding3.view.clicks
 import com.test.R
 import com.uber.autodispose.ScopeProvider
@@ -50,7 +44,7 @@ fun setMessage(it: Throwable, con: Context): String {
     return when (it) {
         is UnknownHostException -> con.resources.getString(R.string.no_internet)
         is HttpException -> {
-            var text = "error"
+            var text = "some error"
             it.response()?.also { resp -> text = resp.message() }
             return text
         }
@@ -64,29 +58,4 @@ fun View.clickBtn(scope: ScopeProvider, success: (View) -> Unit) {
         .observeOn(AndroidSchedulers.mainThread())
         .autoDisposable(scope)
         .subscribe { success.invoke(this@clickBtn) }
-}
-
-
-fun EditText.afterTextChanges(onAfterTextChanged: (String, EditText) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            onAfterTextChanged.invoke(s.toString(), this@afterTextChanges)
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-    })
-}
-
-fun isOnline(context: Context): Boolean {
-    val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-    val n = cm.activeNetwork
-    if (n != null) {
-        val nc = cm.getNetworkCapabilities(n)
-        return nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
-            NetworkCapabilities.TRANSPORT_WIFI
-        )
-    }
-    return false
 }

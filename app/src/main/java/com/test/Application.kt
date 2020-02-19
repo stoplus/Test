@@ -7,7 +7,6 @@ import io.reactivex.plugins.RxJavaPlugins
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-
 class Application : Application() {
 
     override fun onCreate() {
@@ -18,10 +17,6 @@ class Application : Application() {
             androidContext(this@Application)
             // modules
             modules(appModules)
-        }
-
-        RxJavaPlugins.setErrorHandler {
-            Log.e("Application","ErrorHandler", it)
         }
     }
 }

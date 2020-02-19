@@ -32,7 +32,7 @@ class FragmentProfile : BaseFragment() {
 
     private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private val viewModel by sharedViewModel<MainViewModel>()
-    private lateinit var currentPhotoPath: String
+    private var currentPhotoPath = ""
 
     companion object {
         const val REQUEST_CODE_PHOTO = 100
@@ -51,6 +51,7 @@ class FragmentProfile : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        //for updating scope
         profileAddPhotoBtn.clickBtn(scope) { choosePathForPhoto() }
         profileSaveBtn.clickBtn(scope) { saveProfile() }
     }
@@ -59,11 +60,11 @@ class FragmentProfile : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.also {
-            it.main_toolbar.visibility = View.GONE
+            it.include_toolbar.visibility = View.GONE
             profile_name.requestFocus()
         }
 
-        setDataUser()
+        setDataUser() //set user data if it was saved earlier
     }
 
     private fun setDataUser() {
@@ -82,13 +83,14 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun choosePathForPhoto() {
+        //choose were we get image
         context?.also {
             val alertDialog = AlertDialog.Builder(it)
             alertDialog.setTitle(resources.getString(R.string.dialog_choose_title))
             alertDialog.setMessage(resources.getString(R.string.dialog_choose_text))
                 .setIcon(R.drawable.question)
                 .setNegativeButton(resources.getString(R.string.dialog_choose_gallery_btn)) { dialog, _ ->
-                    getImage()
+                    getImageFromGallery()
                     dialog.dismiss()
                 }
                 .setPositiveButton(resources.getString(R.string.dialog_choose_camera_btn)) { dialog, _ ->
@@ -100,22 +102,28 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun saveProfile() {
-        viewModel.saveProfile(
-            UserModel(
-                firstName = profile_name.text.toString(),
-                lastName = profileSurname.text.toString(),
-                photo = currentPhotoPath
+        if (profile_name.text.toString().isEmpty() && profileSurname.text.toString().isEmpty() && currentPhotoPath.isEmpty()) {
+            toast(resources.getString(R.string.profile_error_saved))
+        } else {
+            //save data user in preference
+            viewModel.saveProfile(
+                UserModel(
+                    firstName = profile_name.text.toString(),
+                    lastName = profileSurname.text.toString(),
+                    photo = currentPhotoPath
+                )
             )
-        )
-        toast(resources.getString(R.string.profile_profile_saved))
+            toast(resources.getString(R.string.profile_saved))
+        }
     }
 
-    private fun getImage() = withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-        startActivityForResult(
-            Intent(Intent.ACTION_PICK).apply { type = "image/*" },
-            REQUEST_CODE_STORAGE
-        )
-    }
+    private fun getImageFromGallery() =
+        withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+            startActivityForResult(
+                Intent(Intent.ACTION_PICK).apply { type = "image/*" },
+                REQUEST_CODE_STORAGE
+            )
+        }
 
     private fun makePhoto() =
         withAllPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
@@ -166,18 +174,16 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun getRealPathFromURI(contentURI: Uri): String {
-        val result: String
+        var result = ""
         var cursor: Cursor? = null
         activity?.also {
             cursor = it.contentResolver.query(contentURI, null, null, null, null)
         }
-        result = if (cursor == null) {
-            contentURI.path!!
-        } else {
-            cursor!!.moveToFirst()
-            cursor!!.getString(cursor!!.getColumnIndex(MediaStore.Files.FileColumns.DATA))
+        cursor?.also {
+            it.moveToFirst()
+            result = it.getString(it.getColumnIndex(MediaStore.Files.FileColumns.DATA))
+            it.close()
         }
-        cursor?.close()
         return result
     }
 }

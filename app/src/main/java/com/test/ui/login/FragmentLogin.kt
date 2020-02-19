@@ -8,7 +8,6 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.network.models.response.LoginResponse
 import com.test.ui.MainViewModel
-import com.test.ui.products.ProductFragment
 import com.test.utils.clickBtn
 import com.test.utils.setMessage
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
@@ -18,15 +17,14 @@ import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class LoginFragment : BaseFragment() {
+class FragmentLogin : BaseFragment() {
 
     private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private val viewModel by sharedViewModel<MainViewModel>()
 
     companion object {
-        const val TAG = "LoginFragment"
-
-        fun newInstance() = LoginFragment()
+        const val TAG = "FragmentLogin"
+        fun newInstance() = FragmentLogin()
     }
 
     override fun onCreateView(
@@ -41,20 +39,18 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.also {
-            it.main_toolbar.visibility = View.GONE
+            it.include_toolbar.visibility = View.GONE
             login_user_name.requestFocus()
         }
 
         login_btn.clickBtn(scope) { login() }
         registerLink.clickBtn(scope) {
             addFragment(
-                RegisterFragment.newInstance(),
+                FragmentRegister.newInstance(),
                 R.id.container_for_fragments,
-                RegisterFragment.TAG
+                FragmentRegister.TAG
             )
         }
-        login_user_name.setText("ss")
-        login_password.setText("ss")
     }
 
     private fun login() {
@@ -63,11 +59,7 @@ class LoginFragment : BaseFragment() {
                 viewModel.login(
                     login_user_name.text.toString().trim(),
                     login_password.text.toString().trim()
-                ), {
-                    enter(it)
-                }, {
-                    context?.also { con -> longToast(setMessage(it, con)) }
-                })
+                ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
         }
     }
 
@@ -85,11 +77,11 @@ class LoginFragment : BaseFragment() {
     private fun validate(): Boolean {
         var valid = true
         if (login_user_name.text.toString().isEmpty()) {
-            login_user_name.error = "Введите логин"
+            login_user_name.error = resources.getString(R.string.login_error_enter_login)
             valid = false
         }
         if (login_password.text.toString().isEmpty()) {
-            login_password.error = "Введите пароль"
+            login_password.error = resources.getString(R.string.login_error_enter_password)
             valid = false
         }
         return valid

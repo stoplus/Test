@@ -38,14 +38,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Enter your name"
+        android:text="@string/profile_name_title"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/profile_name"
         app:layout_constraintTop_toBottomOf="@+id/profileAddPhotoBtn" />
 
     <EditText
         android:id="@+id/profile_name"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/frame_black_background_white"
@@ -70,7 +70,7 @@
 
     <EditText
         android:id="@+id/profileSurname"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/frame_black_background_white"
@@ -83,12 +83,11 @@
         app:layout_constraintTop_toBottomOf="@id/profileSurnameTitle"
         tools:ignore="Autofill" />
 
-
     <Button
         android:id="@+id/profileSaveBtn"
         style="@style/ButtonGreenTheme"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/big_btn_width"
+        android:layout_height="@dimen/big_btn_height"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="@string/profile_save_btn"

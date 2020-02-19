@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.test.R
 import com.test.network.models.ProductModel
 import com.test.utils.BASE_URL
@@ -17,11 +16,9 @@ class ProductAdapter(
     private val clickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         return ProductViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_product, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
         )
     }
 
@@ -45,7 +42,7 @@ class ProductAdapter(
             itemView.productText.text = model.description
 
             if (adapterPosition == itemCount - 1) {
-                itemView.producSseporator.visibility = View.GONE
+                itemView.productSeparator.visibility = View.GONE
             }
         }
     }

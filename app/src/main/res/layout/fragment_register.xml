@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@drawable/background_profile">
 
     <EditText
         android:id="@+id/registerLogin"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_black"
+        android:background="@drawable/frame_black_background_white"
         android:hint="@string/login_username_hint"
         android:inputType="text"
         android:maxLength="17"
@@ -22,10 +22,10 @@
 
     <EditText
         android:id="@+id/registerPassword"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/frame_black"
+        android:background="@drawable/frame_black_background_white"
         android:hint="@string/login_password_hint"
         android:inputType="textPassword"
         android:maxLength="17"
@@ -37,10 +37,10 @@
 
     <EditText
         android:id="@+id/registerPasswordRepeat"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/edit_field_login_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/frame_black"
+        android:background="@drawable/frame_black_background_white"
         android:hint="@string/login_password_repeat_hint"
         android:inputType="textPassword"
         android:maxLength="17"
@@ -53,8 +53,8 @@
     <Button
         android:id="@+id/registerBtn"
         style="@style/ButtonGreenTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/big_btn_width"
+        android:layout_height="@dimen/big_btn_height"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:paddingStart="8dp"

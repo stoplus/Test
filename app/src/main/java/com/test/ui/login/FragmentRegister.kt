@@ -8,7 +8,6 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.network.models.response.LoginResponse
 import com.test.ui.MainViewModel
-import com.test.ui.products.ProductFragment
 import com.test.utils.clickBtn
 import com.test.utils.setMessage
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
@@ -18,14 +17,14 @@ import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class RegisterFragment : BaseFragment() {
+class FragmentRegister : BaseFragment() {
 
     private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private val viewModel by sharedViewModel<MainViewModel>()
 
     companion object {
-        const val TAG = "RegisterFragment"
-        fun newInstance() = RegisterFragment()
+        const val TAG = "FragmentRegister"
+        fun newInstance() = FragmentRegister()
     }
 
     override fun onCreateView(
@@ -40,7 +39,7 @@ class RegisterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.also {
-            it.main_toolbar.visibility = View.GONE
+            it.include_toolbar.visibility = View.GONE
             registerLogin.requestFocus()
         }
 
@@ -50,11 +49,7 @@ class RegisterFragment : BaseFragment() {
                     viewModel.register(
                         registerLogin.text.toString().trim(),
                         registerPassword.text.toString().trim()
-                    ), {
-                        enter(it)
-                    }, {
-                        context?.also { con -> longToast(setMessage(it, con)) }
-                    })
+                    ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
             }
         }
     }
@@ -72,20 +67,20 @@ class RegisterFragment : BaseFragment() {
     private fun validate(): Boolean {
         var valid = true
         if (registerLogin.text.toString().isEmpty()) {
-            registerLogin.error = "Введите логин"
+            registerLogin.error = resources.getString(R.string.login_error_enter_login)
             valid = false
         }
         if (registerPassword.text.toString().isEmpty()) {
-            registerPassword.error = "Введите пароль"
+            registerPassword.error = resources.getString(R.string.login_error_enter_password)
             valid = false
         }
         if (registerPasswordRepeat.text.toString().isEmpty()) {
-            registerPasswordRepeat.error = "Повторите пароль"
+            registerPasswordRepeat.error = resources.getString(R.string.login_password_repeat_hint)
             valid = false
         }
         if (registerPassword.text.toString() != registerPasswordRepeat.text.toString()) {
-            registerPasswordRepeat.error = "Пароль не совпадает"
-            registerPassword.error = "Пароль не совпадает"
+            registerPasswordRepeat.error = resources.getString(R.string.login_error_password_not_match)
+            registerPassword.error = resources.getString(R.string.login_error_password_not_match)
             valid = false
         }
         return valid
