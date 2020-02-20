@@ -53,14 +53,11 @@ abstract class BaseFragment : Fragment() {
         showLoading()
             single
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally { hideLoading() }
                 .autoDisposable(scope())
                 .subscribe({
-                hideLoading()
                 success.invoke(it)
-            }, {
-                hideLoading()
-                error?.invoke(it)
-            })
+            }, { error?.invoke(it) })
     }
 }
 

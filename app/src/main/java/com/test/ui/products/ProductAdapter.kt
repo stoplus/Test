@@ -12,14 +12,20 @@ import com.test.utils.IMAGE_PREFIX
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapter(
-    private val list: MutableList<ProductModel>,
     private val clickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+
+    private var list: MutableList<ProductModel>  = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         return ProductViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
         )
+    }
+
+    fun updateList(newList: MutableList<ProductModel>){
+        list = newList
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = list.size
