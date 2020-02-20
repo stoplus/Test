@@ -8,6 +8,7 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.network.models.response.LoginResponse
 import com.test.ui.MainViewModel
+import com.test.ui.profile.FragmentProfile
 import com.test.utils.clickBtn
 import com.test.utils.setMessage
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
@@ -60,7 +61,11 @@ class FragmentRegister : BaseFragment() {
 
     private fun enter(response: LoginResponse) {
         if (response.success) {
-            activity?.also { it.finish() }
+            addFragment(
+                FragmentProfile.newInstance(),
+                R.id.container_for_fragments,
+                FragmentProfile.TAG
+            )
         } else {
             if (response.message.isNotEmpty()) {
                 toast(response.message)

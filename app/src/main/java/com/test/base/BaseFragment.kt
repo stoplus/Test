@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -18,12 +17,16 @@ abstract class BaseFragment : Fragment() {
         this.baseActivity = context as BaseActivity
     }
 
-    fun showLoading() {
+    private fun showLoading() {
         baseActivity.showLoading()
     }
 
-    fun hideLoading() {
+    private fun hideLoading() {
         baseActivity.hideLoading()
+    }
+
+    fun popBackStack() {
+        activity?.supportFragmentManager?.popBackStack()
     }
 
     fun showFragment(fragment: BaseFragment, idContainer: Int, tag: String) {
@@ -58,21 +61,6 @@ abstract class BaseFragment : Fragment() {
                 hideLoading()
                 error?.invoke(it)
             })
-    }
-
-
-    fun subscribe(single: Completable, success: () -> Unit, error: ((Throwable) -> Unit)? = null) {
-        showLoading()
-       single
-           .observeOn(AndroidSchedulers.mainThread())
-           .autoDisposable(scope())
-           .subscribe({
-            hideLoading()
-            success.invoke()
-        }, {
-            hideLoading()
-            error?.invoke(it)
-        })
     }
 }
 

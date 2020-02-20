@@ -19,6 +19,7 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.network.models.UserModel
 import com.test.ui.MainViewModel
+import com.test.ui.login.ActivityLogin
 import com.test.utils.clickBtn
 import com.test.utils.withAllPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
@@ -102,7 +103,10 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun saveProfile() {
-        if (profile_name.text.toString().isEmpty() && profileSurname.text.toString().isEmpty() && currentPhotoPath.isEmpty()) {
+        val user = viewModel.getProfile()
+        if (profile_name.text.toString().isEmpty() || profileSurname.text.toString().isEmpty()
+            || (currentPhotoPath.isEmpty() && user.photo.isEmpty())
+        ) {
             toast(resources.getString(R.string.profile_error_saved))
         } else {
             //save data user in preference
@@ -110,9 +114,17 @@ class FragmentProfile : BaseFragment() {
                 UserModel(
                     firstName = profile_name.text.toString(),
                     lastName = profileSurname.text.toString(),
-                    photo = currentPhotoPath
+                    photo = if (currentPhotoPath.isEmpty()) user.photo else currentPhotoPath
                 )
             )
+            //exit from profile
+            activity?.also {
+                if (it is ActivityLogin) {
+                    it.finish()
+                } else {
+                    popBackStack()
+                }
+            }
             toast(resources.getString(R.string.profile_saved))
         }
     }

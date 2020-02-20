@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.View
 import com.test.R
 import com.test.base.BaseActivity
+import com.test.ui.profile.FragmentProfile
 import kotlinx.android.synthetic.main.view_toolbar.*
+import org.jetbrains.anko.toast
 
 class ActivityLogin : BaseActivity() {
 
@@ -31,6 +33,8 @@ class ActivityLogin : BaseActivity() {
         val fragment = listFragments[listFragments.size - 1]
         if (fragment is FragmentLogin) {
             finish()
+        }else if (fragment is FragmentProfile){
+            toast(resources.getString(R.string.profile_error_saved))
         } else {
             super.onBackPressed()
         }
