@@ -35,13 +35,8 @@ class FragmentLogin : BaseFragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        activity?.also {
-            it.include_toolbar.visibility = View.GONE
-            login_user_name.requestFocus()
-        }
+    override fun onResume() {
+        super.onResume()
 
         login_btn.clickBtn(scope) { login() }
         registerLink.clickBtn(scope) {
@@ -50,6 +45,15 @@ class FragmentLogin : BaseFragment() {
                 R.id.container_for_fragments,
                 FragmentRegister.TAG
             )
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.also {
+            it.include_toolbar.visibility = View.GONE
+            login_user_name.requestFocus()
         }
     }
 

@@ -35,13 +35,8 @@ class FragmentRegister : BaseFragment() {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        activity?.also {
-            it.include_toolbar.visibility = View.GONE
-            registerLogin.requestFocus()
-        }
+    override fun onResume() {
+        super.onResume()
 
         registerBtn.clickBtn(scope) {
             if (validate()) {
@@ -51,6 +46,15 @@ class FragmentRegister : BaseFragment() {
                         registerPassword.text.toString().trim()
                     ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
             }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.also {
+            it.include_toolbar.visibility = View.GONE
+            registerLogin.requestFocus()
         }
     }
 
