@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.test.R
+import com.test.databinding.ItemRateBinding
 import com.test.network.models.ReviewModel
 import com.test.utils.toFullDate
-import kotlinx.android.synthetic.main.item_rate.view.*
-import kotlinx.android.synthetic.main.view_stars.view.*
 
 class RateAdapter(
     private val list: MutableList<ReviewModel>
@@ -28,33 +27,34 @@ class RateAdapter(
     }
 
     inner class RateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemRateBinding.bind(itemView)
         fun updateItem(model: ReviewModel) {
-            setStarsIcon(model.rate)
+            setStarsIcon(model.rate, binding)
             val title = "${model.createdBy?.username} ${itemView.resources.getString(R.string.comment_prefix)} ${model.createdDate.toFullDate()}"
-            itemView.rateDate.text = title
+            binding.rateDate.text = title
             if (model.comment.isNotEmpty()) {
-                itemView.rateComment.text = model.comment.trim()
+                binding.rateComment.text = model.comment.trim()
             } else {
-                itemView.rateComment.visibility = View.GONE
+                binding.rateComment.visibility = View.GONE
             }
         }
 
-        private fun setStarsIcon(rate: Int) {
+        private fun setStarsIcon(rate: Int, binding: ItemRateBinding) {
             //check product rate
             when (rate) {
-                1 -> setStarsIcon(s2 = false, s3 = false, s4 = false, s5 = false)
-                2 -> setStarsIcon(s2 = true, s3 = false, s4 = false, s5 = false)
-                3 -> setStarsIcon(s2 = true, s3 = true, s4 = false, s5 = false)
-                4 -> setStarsIcon(s2 = true, s3 = true, s4 = true, s5 = false)
-                5 -> setStarsIcon(s2 = true, s3 = true, s4 = true, s5 = true)
+                1 -> setStarsIcon(binding, s2 = false, s3 = false, s4 = false, s5 = false)
+                2 -> setStarsIcon(binding, s2 = true, s3 = false, s4 = false, s5 = false)
+                3 -> setStarsIcon(binding, s2 = true, s3 = true, s4 = false, s5 = false)
+                4 -> setStarsIcon(binding, s2 = true, s3 = true, s4 = true, s5 = false)
+                5 -> setStarsIcon(binding, s2 = true, s3 = true, s4 = true, s5 = true)
             }
         }
 
-        private fun setStarsIcon(s2: Boolean, s3: Boolean, s4: Boolean, s5: Boolean) {
-            itemView.star2.visibility = if (s2) View.VISIBLE else View.GONE
-            itemView.star3.visibility = if (s3) View.VISIBLE else View.GONE
-            itemView.star4.visibility = if (s4) View.VISIBLE else View.GONE
-            itemView.star5.visibility = if (s5) View.VISIBLE else View.GONE
+        private fun setStarsIcon(binding: ItemRateBinding, s2: Boolean, s3: Boolean, s4: Boolean, s5: Boolean) {
+            binding.rateContainer.star2.visibility = if (s2) View.VISIBLE else View.GONE
+            binding.rateContainer.star3.visibility = if (s3) View.VISIBLE else View.GONE
+            binding.rateContainer.star4.visibility = if (s4) View.VISIBLE else View.GONE
+            binding.rateContainer.star5.visibility = if (s5) View.VISIBLE else View.GONE
         }
     }
 }

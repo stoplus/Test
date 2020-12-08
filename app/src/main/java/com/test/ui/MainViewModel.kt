@@ -1,53 +1,65 @@
 package com.test.ui
 
-import androidx.lifecycle.ViewModel
-import com.test.data.ApiManager
-import com.test.network.models.ProductModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.test.base.BaseViewModel
 import com.test.network.models.ReviewModel
 import com.test.network.models.UserModel
-import com.test.network.models.request.PostReviewRequest
-import com.test.network.models.response.LoginResponse
-import com.test.network.models.response.PostReviewResponse
+import com.test.network.models.domain.LoginResult
+import com.test.network.models.domain.ProductResult
+import com.test.network.models.domain.RegisterResult
+import com.test.ui.login.LoginUseCase
+import com.test.ui.products.FragmentProductListDirections
+import com.test.ui.products.ProductUseCase
+import com.test.ui.profile.ProfileUseCase
 import io.reactivex.Single
 
-class MainViewModel(
-    private val apiManager: ApiManager
-) : ViewModel() {
+abstract class MainViewModel : BaseViewModel() {
 
-    var productsList = apiManager.productsList
-    var isLoggedLiveData = apiManager.isLoggedLiveData
+    abstract val isLoggedLiveData: LiveData<Boolean>
 
-    fun register(login: String, pass: String): Single<LoginResponse> {
-        return apiManager.register(login, pass)
+    abstract fun login(login: String, pass: String): Single<LoginResult>
+    abstract fun register(login: String, pass: String): Single<RegisterResult>
+    abstract fun saveProfile(user: UserModel)
+    abstract fun getProfile(): UserModel
+    abstract fun getProducts(): Single<MutableList<ProductResult>>
+    abstract fun isLogged(): Boolean
+    abstract fun logout()
+    abstract fun openProfile(id: Int)
+}
+
+class MainViewModelImpl(
+    private val loginUseCase: LoginUseCase,
+    private val profileUseCase: ProfileUseCase,
+    private val productUseCase: ProductUseCase
+) : MainViewModel() {
+
+    override val isLoggedLiveData = loginUseCase.isLoggedLiveData
+
+    override fun register(login: String, pass: String): Single<RegisterResult> {
+        return loginUseCase.register(login, pass)
     }
 
-    fun login(login: String, pass: String): Single<LoginResponse> {
-        return apiManager.login(login, pass)
+    override fun login(login: String, pass: String): Single<LoginResult> {
+        return loginUseCase.login(login, pass)
     }
 
-    fun getProducts(): Single<MutableList<ProductModel>> {
-        return apiManager.getProducts()
+    override fun getProducts(): Single<MutableList<ProductResult>> {
+        return productUseCase.getProducts()
     }
 
-    fun getReviews(productId: Int): Single<MutableList<ReviewModel>> {
-        return apiManager.getReviews(productId)
+    override fun saveProfile(user: UserModel) {
+        profileUseCase.saveProfile(user)
     }
 
-    fun isLogged(): Boolean {
-        return apiManager.isLogged()
+    override fun getProfile() = profileUseCase.getProfile()
+
+    override fun isLogged() = loginUseCase.isLogged()
+    override fun logout() {
+        loginUseCase.logout()
     }
 
-    fun logout(){
-        apiManager.logout()
+    override fun openProfile(id: Int) {
+        router?.navigate(FragmentProductListDirections.actionFragmentProductListToFragmentProfile())
     }
-
-    fun postReview(post: PostReviewRequest, productId: Int): Single<PostReviewResponse> {
-        return apiManager.postReview(post, productId)
-    }
-
-    fun saveProfile(user: UserModel){
-        apiManager.saveProfile(user)
-    }
-
-    fun getProfile()= apiManager.getProfile()
 }

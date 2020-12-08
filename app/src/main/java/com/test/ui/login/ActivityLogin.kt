@@ -3,14 +3,15 @@ package com.test.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import com.test.R
 import com.test.base.BaseActivity
-import com.test.ui.profile.FragmentProfile
-import kotlinx.android.synthetic.main.view_toolbar.*
-import org.jetbrains.anko.toast
+import com.test.base.EmptyViewModel
+import com.test.databinding.ActivityLoginBinding
+import com.test.router.Router
 
-class ActivityLogin : BaseActivity() {
+class ActivityLogin : BaseActivity<EmptyViewModel>() {
+
+    lateinit var binding: ActivityLoginBinding
 
     companion object {
         fun start(activity: Activity) {
@@ -21,22 +22,22 @@ class ActivityLogin : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.container_for_activity)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        catalog_toolbar.visibility = View.GONE
-
-        showFragment(FragmentLogin.newInstance(), R.id.container_for_fragments, FragmentLogin.TAG)
+        router = Router(this, R.id.loginNavFragment)
+//        showFragment(FragmentLogin.newInstance(), R.id.container_for_fragments, FragmentLogin.TAG)
     }
 
-    override fun onBackPressed() {
-        val listFragments = supportFragmentManager.fragments.filter { frag -> frag.isVisible }
-        val fragment = listFragments[listFragments.size - 1]
-        if (fragment is FragmentLogin) {
-            finish()
-        }else if (fragment is FragmentProfile){
-            toast(resources.getString(R.string.profile_error_saved))
-        } else {
-            super.onBackPressed()
-        }
-    }
+//    override fun onBackPressed() {
+//        val listFragments = supportFragmentManager.fragments.filter { frag -> frag.isVisible }
+//        val fragment = listFragments[listFragments.size - 1]
+//        if (fragment is FragmentLogin) {
+//            finish()
+//        }else if (fragment is FragmentProfile){
+//            toast(resources.getString(R.string.profile_error_saved))
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 }

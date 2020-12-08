@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.test.R
-import com.test.network.models.ProductModel
+import com.test.databinding.ItemProductBinding
+import com.test.network.models.domain.ProductResult
 import com.test.utils.BASE_URL
 import com.test.utils.IMAGE_PREFIX
-import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapter(
-    private val clickListener: (Int) -> Unit
+    private val clickListener: (ProductResult) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    private var list: MutableList<ProductModel>  = mutableListOf()
+    private var list: MutableList<ProductResult> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         return ProductViewHolder(
@@ -23,7 +23,7 @@ class ProductAdapter(
         )
     }
 
-    fun updateList(newList: MutableList<ProductModel>){
+    fun updateList(newList: MutableList<ProductResult>) {
         list = newList
         notifyDataSetChanged()
     }
@@ -35,20 +35,22 @@ class ProductAdapter(
     }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun updateItem(model: ProductModel) {
-            Glide.with(itemView)
-                .load(BASE_URL + IMAGE_PREFIX + model.img)
+        private val binding = ItemProductBinding.bind(itemView)
+
+        fun updateItem(response: ProductResult) {
+            Glide.with(binding.root)
+                .load(BASE_URL + IMAGE_PREFIX + response.img)
                 .override(200, 200)
                 .error(R.drawable.no_image)
                 .placeholder(R.drawable.holder)
-                .into(itemView.productImage)
+                .into(binding.productImage)
 
-            itemView.setOnClickListener { clickListener(model.id) }
-            itemView.productTitle.text = model.title
-            itemView.productText.text = model.description
+            binding.root.setOnClickListener { clickListener(response) }
+            binding.productTitle.text = response.title
+            binding.productText.text = response.description
 
             if (adapterPosition == itemCount - 1) {
-                itemView.productSeparator.visibility = View.GONE
+                binding.productSeparator.visibility = View.GONE
             }
         }
     }

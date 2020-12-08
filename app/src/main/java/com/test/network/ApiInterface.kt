@@ -1,10 +1,11 @@
 package com.test.network
 
-import com.test.network.models.response.LoginResponse
-import com.test.network.models.ProductModel
+import com.test.network.models.data.response.LoginResponse
+import com.test.network.models.data.response.ProductResponse
 import com.test.network.models.ReviewModel
-import com.test.network.models.request.PostReviewRequest
-import com.test.network.models.response.PostReviewResponse
+import com.test.network.models.data.request.PostReviewRequest
+import com.test.network.models.data.response.PostReviewResponse
+import com.test.network.models.data.response.RegisterResponse
 import com.test.utils.CONTENT_TYPE_NAME
 import com.test.utils.TOKEN_NAME
 import io.reactivex.Single
@@ -17,7 +18,7 @@ interface ApiInterface {
     fun register(
         @Field("username") username: String,
         @Field("password") password: String
-    ): Single<LoginResponse>
+    ): Single<RegisterResponse>
 
     @FormUrlEncoded
     @POST("api/login/")
@@ -27,7 +28,7 @@ interface ApiInterface {
     ): Single<LoginResponse>
 
     @GET("api/products/")
-    fun getProducts(): Single<MutableList<ProductModel>>
+    fun getProducts(): Single<MutableList<ProductResponse>>
 
     @GET("api/reviews/{productId}")
     fun getReviews(@Path("productId") productId: Int): Single<MutableList<ReviewModel>>
@@ -39,26 +40,4 @@ interface ApiInterface {
         @Path("productId") productId: Int,
         @Body body: PostReviewRequest
     ): Single<PostReviewResponse>
-//
-//    @FormUrlEncoded
-//    @POST("test/agents/betslips")
-//    fun sprotBettingPlaceBet(
-//        @Query("api_key") apiKey: String,
-//        @FieldMap events: HashMap<String, String>,
-//        @Field("testData[agent_token]") token: String
-//    ): Single<StatusBetslip>
-//
-//    @FormUrlEncoded
-//    @POST("test/agent_profile")
-//    fun getAgentProfile(
-//        @Query("api_key") apiKey: String,
-//        @Field("test_agent_profile[instance]") instance: String,
-//        @Field("test_agent_profile[token]") token: String
-//    ): Single<AgentProfileRest>
-//
-//    @GET("public/betslips/{public_code}")
-//    fun publicBetslips(
-//        @Path("public_code")
-//        publicCode: String
-//    ): Single<BetLookupObj>
 }

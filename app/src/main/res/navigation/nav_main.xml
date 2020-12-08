@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/fragmentProductList">
+
+    <fragment
+        android:id="@+id/fragmentProductList"
+        android:name="com.test.ui.products.FragmentProductList"
+        android:label="fragmentProductList"
+        tools:layout="@layout/fragment_product_list">
+        <action
+            android:id="@+id/action_fragmentProductList_to_fragmentDetailProduct"
+            app:destination="@id/fragmentDetailProduct" />
+        <action
+            android:id="@+id/action_fragmentProductList_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+        <argument
+            android:name="product"
+            app:argType="com.test.network.models.domain.ProductResult" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDetailProduct"
+        android:name="com.test.ui.products.productDetail.FragmentDetailProduct"
+        android:label="fragmentDetailProduct"
+        tools:layout="@layout/fragment_product_detail">
+        <action
+            android:id="@+id/action_fragmentDetailProduct_to_fragmentProfile"
+            app:destination="@id/fragmentProfile" />
+        <argument
+            android:name="product"
+            app:argType="com.test.network.models.domain.ProductResult" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentProfile"
+        android:name="com.test.ui.profile.FragmentProfile"
+        android:label="fragmentProfile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

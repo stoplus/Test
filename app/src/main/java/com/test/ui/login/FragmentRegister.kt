@@ -6,45 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import com.test.R
 import com.test.base.BaseFragment
-import com.test.network.models.response.LoginResponse
+import com.test.databinding.FragmentRegisterBinding
+import com.test.network.models.domain.RegisterResult
 import com.test.ui.MainViewModel
-import com.test.ui.profile.FragmentProfile
 import com.test.utils.clickBtn
 import com.test.utils.setMessage
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import kotlinx.android.synthetic.main.container_for_activity.*
-import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FragmentRegister : BaseFragment() {
+class FragmentRegister : BaseFragment<MainViewModel>() {
 
     private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
-    private val viewModel by sharedViewModel<MainViewModel>()
-
-    companion object {
-        const val TAG = "FragmentRegister"
-        fun newInstance() = FragmentRegister()
-    }
+    private var bindingNull: FragmentRegisterBinding? = null
+    private val binding get() = bindingNull!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
+    ): View {
+        bindingNull = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
 
-        registerBtn.clickBtn(scope) {
+        binding.registerBtn.clickBtn(scope) {
             if (validate()) {
                 subscribe(
                     viewModel.register(
-                        registerLogin.text.toString().trim(),
-                        registerPassword.text.toString().trim()
+                        binding.registerLogin.text.toString().trim(),
+                        binding.registerPassword.text.toString().trim()
                     ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
             }
         }
@@ -53,19 +47,12 @@ class FragmentRegister : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.also {
-            it.include_toolbar.visibility = View.GONE
-            registerLogin.requestFocus()
-        }
+        binding.registerLogin.requestFocus()
     }
 
-    private fun enter(response: LoginResponse) {
+    private fun enter(response: RegisterResult) {
         if (response.success) {
-            addFragment(
-                FragmentProfile.newInstance(),
-                R.id.container_for_fragments,
-                FragmentProfile.TAG
-            )
+            router?.navigate(R.id.action_fragmentRegister_to_fragmentProfile)
         } else {
             if (response.message.isNotEmpty()) {
                 toast(response.message)
@@ -75,23 +62,28 @@ class FragmentRegister : BaseFragment() {
 
     private fun validate(): Boolean {
         var valid = true
-        if (registerLogin.text.toString().isEmpty()) {
-            registerLogin.error = resources.getString(R.string.login_error_enter_login)
+        if (binding.registerLogin.text.toString().isEmpty()) {
+            binding.registerLogin.error = resources.getString(R.string.login_error_enter_login)
             valid = false
         }
-        if (registerPassword.text.toString().isEmpty()) {
-            registerPassword.error = resources.getString(R.string.login_error_enter_password)
+        if (binding.registerPassword.text.toString().isEmpty()) {
+            binding.registerPassword.error = resources.getString(R.string.login_error_enter_password)
             valid = false
         }
-        if (registerPasswordRepeat.text.toString().isEmpty()) {
-            registerPasswordRepeat.error = resources.getString(R.string.login_password_repeat_hint)
+        if (binding.registerPasswordRepeat.text.toString().isEmpty()) {
+            binding.registerPasswordRepeat.error = resources.getString(R.string.login_password_repeat_hint)
             valid = false
         }
-        if (registerPassword.text.toString() != registerPasswordRepeat.text.toString()) {
-            registerPasswordRepeat.error = resources.getString(R.string.login_error_password_not_match)
-            registerPassword.error = resources.getString(R.string.login_error_password_not_match)
+        if (binding.registerPassword.text.toString() != binding.registerPasswordRepeat.text.toString()) {
+            binding.registerPasswordRepeat.error = resources.getString(R.string.login_error_password_not_match)
+            binding.registerPassword.error = resources.getString(R.string.login_error_password_not_match)
             valid = false
         }
         return valid
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bindingNull = null
     }
 }

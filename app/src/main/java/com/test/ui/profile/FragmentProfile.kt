@@ -17,54 +17,49 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.test.BuildConfig
 import com.test.R
 import com.test.base.BaseFragment
+import com.test.databinding.FragmentProfileBinding
 import com.test.network.models.UserModel
 import com.test.ui.MainViewModel
 import com.test.ui.login.ActivityLogin
 import com.test.utils.clickBtn
 import com.test.utils.withAllPermissions
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import kotlinx.android.synthetic.main.container_for_activity.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.support.v4.toast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
-class FragmentProfile : BaseFragment() {
+class FragmentProfile : BaseFragment<MainViewModel>() {
 
     private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
-    private val viewModel by sharedViewModel<MainViewModel>()
     private var currentPhotoPath = ""
+    private var bindingNull: FragmentProfileBinding? = null
+    private val binding get() = bindingNull!!
 
     companion object {
         const val REQUEST_CODE_PHOTO = 100
         const val REQUEST_CODE_STORAGE = 222
-        const val TAG = "FragmentProfile"
-        fun newInstance() = FragmentProfile()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View {
+        bindingNull = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         //for updating scope
-        profileAddPhotoBtn.clickBtn(scope) { choosePathForPhoto() }
-        profileSaveBtn.clickBtn(scope) { saveProfile() }
+        binding.profileAddPhotoBtn.clickBtn(scope) { choosePathForPhoto() }
+        binding.profileSaveBtn.clickBtn(scope) { saveProfile() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.also {
-            it.include_toolbar.visibility = View.GONE
-            profile_name.requestFocus()
-        }
-
+        binding.profileName.requestFocus()
         setDataUser() //set user data if it was saved earlier
     }
 
@@ -77,10 +72,10 @@ class FragmentProfile : BaseFragment() {
                 .circleCrop()
                 .error(R.drawable.default_photo)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(profilePhoto)
+                .into(binding.profilePhoto)
         }
-        profile_name.setText(user.firstName)
-        profileSurname.setText(user.lastName)
+        binding.profileName.setText(user.firstName)
+        binding.profileSurname.setText(user.lastName)
     }
 
     private fun choosePathForPhoto() {
@@ -104,7 +99,7 @@ class FragmentProfile : BaseFragment() {
 
     private fun saveProfile() {
         val user = viewModel.getProfile()
-        if (profile_name.text.toString().isEmpty() || profileSurname.text.toString().isEmpty()
+        if (binding.profileName.text.toString().isEmpty() || binding.profileSurname.text.toString().isEmpty()
             || (currentPhotoPath.isEmpty() && user.photo.isEmpty())
         ) {
             toast(resources.getString(R.string.profile_error_saved))
@@ -112,8 +107,8 @@ class FragmentProfile : BaseFragment() {
             //save data user in preference
             viewModel.saveProfile(
                 UserModel(
-                    firstName = profile_name.text.toString(),
-                    lastName = profileSurname.text.toString(),
+                    firstName = binding.profileName.text.toString(),
+                    lastName = binding.profileSurname.text.toString(),
                     photo = if (currentPhotoPath.isEmpty()) user.photo else currentPhotoPath
                 )
             )
@@ -163,7 +158,7 @@ class FragmentProfile : BaseFragment() {
                     data?.data?.also {
                         val photoFile = File(getRealPathFromURI(it))
                         val uri = FileProvider.getUriForFile(
-                            context!!, BuildConfig.APPLICATION_ID + ".provider",
+                            binding.root.context, BuildConfig.APPLICATION_ID + ".provider",
                             photoFile
                         )
                         currentPhotoPath = uri.toString()
@@ -181,7 +176,7 @@ class FragmentProfile : BaseFragment() {
                 .circleCrop()
                 .error(R.drawable.default_photo)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(profilePhoto)
+                .into(binding.profilePhoto)
         }
     }
 
@@ -197,5 +192,10 @@ class FragmentProfile : BaseFragment() {
             it.close()
         }
         return result
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bindingNull = null
     }
 }

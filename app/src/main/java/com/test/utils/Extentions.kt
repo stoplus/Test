@@ -5,7 +5,9 @@ import android.view.View
 import com.jakewharton.rxbinding3.view.clicks
 import com.test.R
 import com.uber.autodispose.ScopeProvider
+import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import retrofit2.HttpException
 import java.net.UnknownHostException
