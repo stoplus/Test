@@ -9,15 +9,12 @@ import com.test.base.BaseFragment
 import com.test.databinding.FragmentRegisterBinding
 import com.test.network.models.domain.RegisterResult
 import com.test.ui.MainViewModel
-import com.test.utils.clickBtn
 import com.test.utils.setMessage
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
 class FragmentRegister : BaseFragment<MainViewModel>() {
 
-    private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private var bindingNull: FragmentRegisterBinding? = null
     private val binding get() = bindingNull!!
 
@@ -30,29 +27,22 @@ class FragmentRegister : BaseFragment<MainViewModel>() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.registerBtn.clickBtn(scope) {
+        binding.registerBtn.setOnClickListener {
             if (validate()) {
-                subscribe(
-                    viewModel.register(
-                        binding.registerLogin.text.toString().trim(),
-                        binding.registerPassword.text.toString().trim()
-                    ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
+                subscribe(viewModel.register(
+                    binding.registerLogin.text.toString().trim(),
+                    binding.registerPassword.text.toString().trim()
+                ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
             }
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.registerLogin.requestFocus()
-    }
-
     private fun enter(response: RegisterResult) {
         if (response.success) {
-            router?.navigate(R.id.action_fragmentRegister_to_fragmentProfile)
+            router?.toMain()
         } else {
             if (response.message.isNotEmpty()) {
                 toast(response.message)

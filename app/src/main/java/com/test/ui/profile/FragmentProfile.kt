@@ -4,16 +4,23 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.database.Cursor
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.test.BuildConfig
 import com.test.R
 import com.test.base.BaseFragment
@@ -21,16 +28,12 @@ import com.test.databinding.FragmentProfileBinding
 import com.test.network.models.UserModel
 import com.test.ui.MainViewModel
 import com.test.ui.login.ActivityLogin
-import com.test.utils.clickBtn
 import com.test.utils.withAllPermissions
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.jetbrains.anko.support.v4.toast
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
 class FragmentProfile : BaseFragment<MainViewModel>() {
 
-    private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private var currentPhotoPath = ""
     private var bindingNull: FragmentProfileBinding? = null
     private val binding get() = bindingNull!!
@@ -49,16 +52,11 @@ class FragmentProfile : BaseFragment<MainViewModel>() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        //for updating scope
-        binding.profileAddPhotoBtn.clickBtn(scope) { choosePathForPhoto() }
-        binding.profileSaveBtn.clickBtn(scope) { saveProfile() }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.profileAddPhotoBtn.setOnClickListener { choosePathForPhoto() }
+        binding.profileSaveBtn.setOnClickListener { saveProfile() }
         binding.profileName.requestFocus()
         setDataUser() //set user data if it was saved earlier
     }
@@ -115,7 +113,7 @@ class FragmentProfile : BaseFragment<MainViewModel>() {
             //exit from profile
             activity?.also {
                 if (it is ActivityLogin) {
-                    it.finish()
+                    router?.toMain()
                 } else {
                     popBackStack()
                 }
@@ -125,7 +123,7 @@ class FragmentProfile : BaseFragment<MainViewModel>() {
     }
 
     private fun getImageFromGallery() =
-        withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+        withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE) {
             startActivityForResult(
                 Intent(Intent.ACTION_PICK).apply { type = "image/*" },
                 REQUEST_CODE_STORAGE
@@ -156,11 +154,16 @@ class FragmentProfile : BaseFragment<MainViewModel>() {
                 REQUEST_CODE_PHOTO -> showImage()
                 REQUEST_CODE_STORAGE -> {
                     data?.data?.also {
-                        val photoFile = File(getRealPathFromURI(it))
-                        val uri = FileProvider.getUriForFile(
-                            binding.root.context, BuildConfig.APPLICATION_ID + ".provider",
-                            photoFile
-                        )
+                        val uri = if (Build.VERSION.SDK_INT < 24) {
+                            it
+                        } else {
+                            val photoFile = File(getRealPathFromURI(it))
+                            FileProvider.getUriForFile(
+                                binding.root.context, BuildConfig.APPLICATION_ID + ".provider",
+                                photoFile
+                            )
+                        }
+
                         currentPhotoPath = uri.toString()
                         showImage()
                     }
@@ -182,14 +185,14 @@ class FragmentProfile : BaseFragment<MainViewModel>() {
 
     private fun getRealPathFromURI(contentURI: Uri): String {
         var result = ""
-        var cursor: Cursor? = null
-        activity?.also {
-            cursor = it.contentResolver.query(contentURI, null, null, null, null)
-        }
-        cursor?.also {
-            it.moveToFirst()
-            result = it.getString(it.getColumnIndex(MediaStore.Files.FileColumns.DATA))
-            it.close()
+        val cursor = activity?.contentResolver?.query(contentURI, null, null, null, null)
+        if (cursor == null) { //checking
+            contentURI.path?.also { result = it }
+        } else {
+            cursor.moveToFirst()
+            val idx = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
         }
         return result
     }

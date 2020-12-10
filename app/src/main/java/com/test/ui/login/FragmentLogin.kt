@@ -6,18 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.test.R
 import com.test.base.BaseFragment
-import com.test.network.models.domain.LoginResult
 import com.test.databinding.FragmentLoginBinding
+import com.test.network.models.domain.LoginResult
 import com.test.ui.MainViewModel
-import com.test.utils.clickBtn
 import com.test.utils.setMessage
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
 class FragmentLogin : BaseFragment<MainViewModel>() {
 
-    private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private var bindingNull: FragmentLoginBinding? = null
     private val binding get() = bindingNull!!
 
@@ -30,28 +27,22 @@ class FragmentLogin : BaseFragment<MainViewModel>() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        binding.loginBtn.clickBtn(scope) { login() }
-        binding.registerLink.clickBtn(scope) {
-            router?.navigate(R.id.action_fragmentLogin_to_passwordFragment)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.loginBtn.setOnClickListener { login() }
+        binding.registerLink.setOnClickListener {
+            router?.navigate(R.id.action_fragmentLogin_to_passwordFragment)
+        }
         binding.loginUserName.requestFocus()
     }
 
     private fun login() {
         if (validate()) {
-            subscribe(
-                viewModel.login(
-                    binding.loginUserName.text.toString().trim(),
-                    binding.loginPassword.text.toString().trim()
-                ),
+            subscribe(viewModel.login(
+                binding.loginUserName.text.toString().trim(),
+                binding.loginPassword.text.toString().trim()
+            ),
                 { enter(it) },
                 { context?.also { con -> longToast(setMessage(it, con)) } }
             )

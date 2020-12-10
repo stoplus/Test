@@ -15,7 +15,6 @@
         android:inputType="text"
         android:maxLength="17"
         android:padding="8dp"
-        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@+id/register_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

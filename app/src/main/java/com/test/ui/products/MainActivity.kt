@@ -1,11 +1,13 @@
 package com.test.ui.products
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.test.R
@@ -15,7 +17,7 @@ import com.test.router.Router
 import com.test.ui.MainViewModel
 import com.test.ui.login.ActivityLogin
 
-class ActivityProduct : BaseActivity<MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawer: DrawerLayout
     private lateinit var binding: ActivityMainBinding
@@ -61,7 +63,7 @@ class ActivityProduct : BaseActivity<MainViewModel>(), NavigationView.OnNavigati
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.nav_login -> ActivityLogin.start(this)
+            R.id.nav_login -> router?.toLogin()
             R.id.nav_logout -> viewModel.logout()
             R.id.nav_profile -> {
                 binding.includeToolbar.root.visibility = View.GONE

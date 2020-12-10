@@ -16,9 +16,7 @@ import com.test.network.models.data.request.PostReviewRequest
 import com.test.ui.products.RateAdapter
 import com.test.utils.BASE_URL
 import com.test.utils.IMAGE_PREFIX
-import com.test.utils.clickBtn
 import com.test.utils.setMessage
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import org.koin.core.parameter.ParametersDefinition
@@ -27,8 +25,6 @@ import java.util.*
 
 class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
 
-//    private val viewModel by sharedViewModel<MainViewModel>()
-    private val scope by lazy { AndroidLifecycleScopeProvider.from(this) }
     private var currentRate: Int = 0
     private var bindingNull: FragmentProductDetailBinding? = null
     private val binding get() = bindingNull!!
@@ -49,7 +45,7 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
     override fun onResume() {
         super.onResume()
         //for updating scope
-        binding.includeMyComment.commentBtn.clickBtn(scope) { tryPostReview() }
+        binding.includeMyComment.commentBtn.setOnClickListener { tryPostReview() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

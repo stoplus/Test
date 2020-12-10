@@ -8,7 +8,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.test.ui.login.ActivityLogin
-import com.test.ui.products.ActivityProduct
+import com.test.ui.products.MainActivity
 import kotlin.reflect.KClass
 
 class Router(
@@ -44,7 +44,7 @@ class Router(
 
     fun toMain() {
         activity.finish()
-        startClearActivity(ActivityProduct::class)
+        startClearActivity(MainActivity::class)
     }
 
     fun toLogin() {

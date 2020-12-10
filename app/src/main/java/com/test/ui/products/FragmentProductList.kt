@@ -33,9 +33,7 @@ class FragmentProductList : BaseFragment<MainViewModel>(){
         getAllProducts()
 
         //init swipeRefresh
-        binding.swipeContainer.setOnRefreshListener{
-            getAllProducts()
-        }
+        binding.swipeContainer.setOnRefreshListener{ getAllProducts() }
         binding.swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
@@ -59,11 +57,6 @@ class FragmentProductList : BaseFragment<MainViewModel>(){
 
     private fun initAdapter() {
         adapterProd = ProductAdapter { product ->
-//            showFragment(
-//                FragmentDetailProduct.newInstance(idProduct),
-//                R.id.container_for_fragments,
-//                FragmentDetailProduct.TAG
-//            )
             router?.navigate(
                 FragmentProductListDirections.actionFragmentProductListToFragmentDetailProduct(
                     product
