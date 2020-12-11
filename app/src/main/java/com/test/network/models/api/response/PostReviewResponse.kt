@@ -1,4 +1,4 @@
-package com.test.network.models.data.response
+package com.test.network.models.api.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,11 +1,10 @@
 package com.test.data
 
 import com.test.network.ApiInterface
-import com.test.repository.ModelRepository
+
 
 class ApiManager(
     private val prefManager: PreferencesManager,
-    private val modelRepository: ModelRepository,
     private val api: ApiInterface
 ) {
 

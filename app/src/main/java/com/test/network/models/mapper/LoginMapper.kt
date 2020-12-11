@@ -2,8 +2,8 @@ package com.test.network.models.mapper
 
 import com.test.network.models.domain.LoginResult
 import com.test.network.models.domain.RegisterResult
-import com.test.network.models.data.response.LoginResponse
-import com.test.network.models.data.response.RegisterResponse
+import com.test.network.models.api.response.LoginResponse
+import com.test.network.models.api.response.RegisterResponse
 
 fun LoginResponse?.toDomain(): LoginResult = this?.let {
     LoginResult(

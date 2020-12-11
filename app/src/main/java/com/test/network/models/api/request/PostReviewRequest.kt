@@ -1,4 +1,4 @@
-package com.test.network.models.data.request
+package com.test.network.models.api.request
 
 import com.google.gson.annotations.SerializedName
 
@@ -9,5 +9,4 @@ data class PostReviewRequest (
 
     @SerializedName("text")
     var text: String = ""
-
 )

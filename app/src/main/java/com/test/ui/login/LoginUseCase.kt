@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.test.data.PreferencesManager
 import com.test.network.models.domain.LoginResult
 import com.test.network.ApiInterface
-import com.test.network.models.UserModel
 import com.test.network.models.domain.RegisterResult
+import com.test.network.models.domain.UserResult
 import com.test.network.models.mapper.toDomain
 import io.reactivex.Single
 
@@ -56,7 +56,7 @@ class LoginUseCaseImpl(
 
     override fun logout() {
         prefManager.saveToken("")
-        prefManager.saveProfile(UserModel())
+        prefManager.saveProfile(UserResult.emptyModel())
         isLoggedLiveData.postValue(false)
     }
 }

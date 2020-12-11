@@ -1,15 +1,15 @@
-package com.test.network.models.data.response
+package com.test.network.models.api.response
 
 import com.google.gson.annotations.SerializedName
 
 class LoginResponse (
 
     @SerializedName("success")
-    var success: Boolean? = null,
+    var success: Boolean?,
 
     @SerializedName("token")
-    var token: String? = null,
+    var token: String?,
 
     @SerializedName("message")
-    var message: String? = null
+    var message: String?
 )

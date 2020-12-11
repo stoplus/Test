@@ -1,11 +1,11 @@
 package com.test.network
 
-import com.test.network.models.data.response.LoginResponse
-import com.test.network.models.data.response.ProductResponse
-import com.test.network.models.ReviewModel
-import com.test.network.models.data.request.PostReviewRequest
-import com.test.network.models.data.response.PostReviewResponse
-import com.test.network.models.data.response.RegisterResponse
+import com.test.network.models.api.response.LoginResponse
+import com.test.network.models.api.response.ProductResponse
+import com.test.network.models.api.response.ReviewResponse
+import com.test.network.models.api.request.PostReviewRequest
+import com.test.network.models.api.response.PostReviewResponse
+import com.test.network.models.api.response.RegisterResponse
 import com.test.utils.CONTENT_TYPE_NAME
 import com.test.utils.TOKEN_NAME
 import io.reactivex.Single
@@ -31,7 +31,7 @@ interface ApiInterface {
     fun getProducts(): Single<MutableList<ProductResponse>>
 
     @GET("api/reviews/{productId}")
-    fun getReviews(@Path("productId") productId: Int): Single<MutableList<ReviewModel>>
+    fun getReviews(@Path("productId") productId: Int): Single<MutableList<ReviewResponse>>
 
     @POST("api/reviews/{productId}")
     fun postReview(

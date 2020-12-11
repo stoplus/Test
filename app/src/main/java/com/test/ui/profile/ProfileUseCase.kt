@@ -1,20 +1,20 @@
 package com.test.ui.profile
 
 import com.test.data.PreferencesManager
-import com.test.network.models.UserModel
+import com.test.network.models.domain.UserResult
 
 interface ProfileUseCase {
-    fun saveProfile(user: UserModel)
-    fun getProfile(): UserModel
+    fun saveProfile(userResponse: UserResult)
+    fun getProfile(): UserResult
 }
 
 class ProfileUseCaseImpl(
     private val prefManager: PreferencesManager
 ) : ProfileUseCase {
 
-    override fun saveProfile(user: UserModel) {
-        prefManager.saveProfile(user)
+    override fun saveProfile(userResponse: UserResult) {
+        prefManager.saveProfile(userResponse)
     }
 
-    override fun getProfile(): UserModel = prefManager.getProfile()
+    override fun getProfile() = prefManager.getProfile()
 }

@@ -2,10 +2,10 @@ package com.test.ui.products
 
 import com.test.data.PreferencesManager
 import com.test.network.ApiInterface
-import com.test.network.models.ReviewModel
-import com.test.network.models.data.request.PostReviewRequest
-import com.test.network.models.data.response.PostReviewResponse
+import com.test.network.models.api.request.PostReviewRequest
+import com.test.network.models.api.response.PostReviewResponse
 import com.test.network.models.domain.ProductResult
+import com.test.network.models.domain.ReviewResult
 import com.test.network.models.mapper.toDomain
 import com.test.utils.CONTENT_TYPE_VALUE
 import com.test.utils.TOKEN_PREFIX
@@ -13,7 +13,7 @@ import io.reactivex.Single
 
 interface ProductUseCase {
     fun getProducts(): Single<MutableList<ProductResult>>
-    fun getReviews(productId: Int): Single<MutableList<ReviewModel>>
+    fun getReviews(productId: Int): Single<MutableList<ReviewResult>>
     fun postReview(post: PostReviewRequest, productId: Int): Single<PostReviewResponse>
 }
 
@@ -30,8 +30,12 @@ class ProductUseCaseImpl(
             }
     }
 
-    override fun getReviews(productId: Int): Single<MutableList<ReviewModel>> {
+    override fun getReviews(productId: Int): Single<MutableList<ReviewResult>> {
         return api.getReviews(productId)
+            .flatMap {
+                val list = it.map { response -> response.toDomain() }.toMutableList()
+                Single.just(list)
+            }
     }
 
     override fun postReview(post: PostReviewRequest, productId: Int): Single<PostReviewResponse> {

@@ -12,7 +12,6 @@ import org.jetbrains.anko.support.v4.longToast
 
 class FragmentProductList : BaseFragment<MainViewModel>(){
 
-//    private val viewModel by sharedViewModel<MainViewModel>()
     private lateinit var adapterProd: ProductAdapter
     private var bindingNull: FragmentProductListBinding? = null
     private val binding get() = bindingNull!!

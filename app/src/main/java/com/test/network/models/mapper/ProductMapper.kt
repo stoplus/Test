@@ -1,7 +1,7 @@
 package com.test.network.models.mapper
 
 import com.test.network.models.domain.ProductResult
-import com.test.network.models.data.response.ProductResponse
+import com.test.network.models.api.response.ProductResponse
 
 
 

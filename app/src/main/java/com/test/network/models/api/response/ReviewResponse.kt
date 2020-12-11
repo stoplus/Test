@@ -1,25 +1,24 @@
-package com.test.network.models
+package com.test.network.models.api.response
 
 import com.google.gson.annotations.SerializedName
 
-class ReviewModel (
+class ReviewResponse (
 
     @SerializedName("id")
-    var id: Int = 0,
+    var id: Int?,
 
     @SerializedName("product")
-    var productId: Int = 0,
+    var productId: Int?,
 
     @SerializedName("rate")
-    var rate: Int = 0,
+    var rate: Int?,
 
     @SerializedName("text")
-    var comment: String = "",
-
+    var comment: String?,
 
     @SerializedName("created_by")
-    var createdBy: UserModel? = null,
+    var createdBy: UserResponse?,
 
     @SerializedName("created_at")
-    var createdDate: String = ""
+    var createdDate: String?
 )

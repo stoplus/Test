@@ -3,10 +3,10 @@ package com.test.ui.products.productDetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.test.base.BaseViewModel
-import com.test.network.models.ReviewModel
-import com.test.network.models.data.request.PostReviewRequest
-import com.test.network.models.data.response.PostReviewResponse
+import com.test.network.models.api.request.PostReviewRequest
+import com.test.network.models.api.response.PostReviewResponse
 import com.test.network.models.domain.ProductResult
+import com.test.network.models.domain.ReviewResult
 import com.test.ui.login.LoginUseCase
 import com.test.ui.products.ProductUseCase
 import io.reactivex.Single
@@ -16,7 +16,7 @@ abstract class ProductDetailViewModel : BaseViewModel() {
     abstract val productLiveData: LiveData<ProductResult>
 
     abstract fun getProducts(): Single<MutableList<ProductResult>>
-    abstract fun getReviews(): Single<MutableList<ReviewModel>>
+    abstract fun getReviews(): Single<MutableList<ReviewResult>>
     abstract fun postReview(reviewRequest: PostReviewRequest): Single<PostReviewResponse>
     abstract fun isLogged(): Boolean
     abstract fun logout()
@@ -38,7 +38,7 @@ class ProductDetailViewModelImpl(
         return productUseCase.getProducts()
     }
 
-    override fun getReviews(): Single<MutableList<ReviewModel>> {
+    override fun getReviews(): Single<MutableList<ReviewResult>> {
         return productUseCase.getReviews(product.id)
     }
 

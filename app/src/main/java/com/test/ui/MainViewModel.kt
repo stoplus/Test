@@ -1,13 +1,11 @@
 package com.test.ui
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.test.base.BaseViewModel
-import com.test.network.models.ReviewModel
-import com.test.network.models.UserModel
 import com.test.network.models.domain.LoginResult
 import com.test.network.models.domain.ProductResult
 import com.test.network.models.domain.RegisterResult
+import com.test.network.models.domain.UserResult
 import com.test.ui.login.LoginUseCase
 import com.test.ui.products.FragmentProductListDirections
 import com.test.ui.products.ProductUseCase
@@ -20,8 +18,8 @@ abstract class MainViewModel : BaseViewModel() {
 
     abstract fun login(login: String, pass: String): Single<LoginResult>
     abstract fun register(login: String, pass: String): Single<RegisterResult>
-    abstract fun saveProfile(user: UserModel)
-    abstract fun getProfile(): UserModel
+    abstract fun saveProfile(userResponse: UserResult)
+    abstract fun getProfile(): UserResult
     abstract fun getProducts(): Single<MutableList<ProductResult>>
     abstract fun isLogged(): Boolean
     abstract fun logout()
@@ -48,8 +46,8 @@ class MainViewModelImpl(
         return productUseCase.getProducts()
     }
 
-    override fun saveProfile(user: UserModel) {
-        profileUseCase.saveProfile(user)
+    override fun saveProfile(userResponse: UserResult) {
+        profileUseCase.saveProfile(userResponse)
     }
 
     override fun getProfile() = profileUseCase.getProfile()

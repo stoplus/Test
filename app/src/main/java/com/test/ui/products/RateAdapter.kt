@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.test.R
 import com.test.databinding.ItemRateBinding
-import com.test.network.models.ReviewModel
+import com.test.network.models.domain.ReviewResult
 import com.test.utils.toFullDate
 
 class RateAdapter(
-    private val list: MutableList<ReviewModel>
+    private val list: MutableList<ReviewResult>
 ) : RecyclerView.Adapter<RateAdapter.RateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RateViewHolder {
@@ -28,12 +28,12 @@ class RateAdapter(
 
     inner class RateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemRateBinding.bind(itemView)
-        fun updateItem(model: ReviewModel) {
-            setStarsIcon(model.rate, binding)
-            val title = "${model.createdBy?.username} ${itemView.resources.getString(R.string.comment_prefix)} ${model.createdDate.toFullDate()}"
+        fun updateItem(response: ReviewResult) {
+            setStarsIcon(response.rate, binding)
+            val title = "${response.createdBy.username} ${itemView.resources.getString(R.string.comment_prefix)} ${response.createdDate.toFullDate()}"
             binding.rateDate.text = title
-            if (model.comment.isNotEmpty()) {
-                binding.rateComment.text = model.comment.trim()
+            if (response.comment.isNotEmpty()) {
+                binding.rateComment.text = response.comment.trim()
             } else {
                 binding.rateComment.visibility = View.GONE
             }

@@ -70,8 +70,8 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
         baseActivity.hideLoading()
     }
 
-    fun popBackStack() {
-        activity?.supportFragmentManager?.popBackStack()
+    fun onBackPressed() {
+        activity?.onBackPressed()
     }
 
 //    fun showFragment(fragment: BaseFragment, idContainer: Int, tag: String) {

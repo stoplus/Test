@@ -8,7 +8,6 @@ import com.ihsanbal.logging.LoggingInterceptor
 import com.test.BuildConfig
 import com.test.base.EmptyViewModel
 import com.test.data.PreferencesManager
-import com.test.repository.ModelRepository
 import com.test.ui.MainViewModel
 import com.test.ui.MainViewModelImpl
 import com.test.ui.login.LoginUseCase
@@ -70,7 +69,6 @@ private val dataModule = module {
     single { get<Context>().applicationContext.getSharedPreferences(PREF, Context.MODE_PRIVATE) }
     single { PreferencesManager(get()) }
 //    single { ApiManager(get(), get(), get()) }
-    single { ModelRepository() }
     single { OkHttpClient.Builder() }
 }
 
