@@ -25,7 +25,7 @@ import com.test.utils.withAllPermissions
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
 
-class FragmentProfile : BaseFragment<MainViewModel>() {
+class FragmentProfile : BaseFragment<ProfileViewModel>() {
 
     private var currentPhotoPath = ""
     private var bindingNull: FragmentProfileBinding? = null

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group>
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_login"
-            android:title="@string/navigation_drawer_login" />
+            android:title="@string/navigation_drawer_login"
+            android:visible="true"/>
 
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
-            android:title="@string/navigation_drawer_profile" />
+            android:title="@string/navigation_drawer_profile"
+            android:visible="true"/>
 
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
-            android:title="@string/navigation_drawer_logout" />
+            android:title="@string/navigation_drawer_logout"
+            android:visible="true"/>
 
-    </group>
 </menu>

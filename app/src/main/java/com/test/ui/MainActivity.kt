@@ -1,21 +1,18 @@
-package com.test.ui.products
+package com.test.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.test.R
 import com.test.base.BaseActivity
 import com.test.databinding.ActivityMainBinding
 import com.test.router.Router
-import com.test.ui.MainViewModel
-import com.test.ui.login.ActivityLogin
 
 class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,19 +43,21 @@ class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationI
         navigationView.setNavigationItemSelectedListener(this)
 
         viewModel.isLoggedLiveData.observe(this, {
-            // set/show icon
-            navigationView.menu.getItem(0).isVisible = !it
-            navigationView.menu.getItem(1).isVisible = it
-            navigationView.menu.getItem(2).isVisible = it
+            Log.d("ffff" ," viewModel = ${viewModel}" )
+            Log.d("ffff" ," viewModel.isLoggedLiveData = ${viewModel.isLoggedLiveData}" )
+            showItemMenu(navigationView, it)
         })
 
         //init icon
-        val logged = viewModel.isLogged()
-        navigationView.menu.getItem(0).isVisible = !logged
-        navigationView.menu.getItem(1).isVisible = logged
-        navigationView.menu.getItem(2).isVisible = logged
+        showItemMenu(navigationView, viewModel.isLogged())
 
         router = Router(this, R.id.container_for_fragments)
+    }
+
+    private fun showItemMenu(navigationView: NavigationView, shown: Boolean){
+        navigationView.menu.findItem(R.id.nav_login).isVisible = !shown
+        navigationView.menu.findItem(R.id.nav_profile).isVisible = shown
+        navigationView.menu.findItem(R.id.nav_logout).isVisible = shown
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

@@ -8,7 +8,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.test.ui.login.ActivityLogin
-import com.test.ui.products.MainActivity
+import com.test.ui.MainActivity
 import kotlin.reflect.KClass
 
 class Router(

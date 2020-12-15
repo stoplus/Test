@@ -1,4 +1,4 @@
-package com.test.ui.products
+package com.test.ui.products.productDetail
 
 import android.view.LayoutInflater
 import android.view.View

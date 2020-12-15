@@ -17,8 +17,12 @@ import com.test.ui.products.ProductUseCaseImpl
 import com.test.ui.products.productDetail.FragmentDetailProductArgs
 import com.test.ui.products.productDetail.ProductDetailViewModel
 import com.test.ui.products.productDetail.ProductDetailViewModelImpl
+import com.test.ui.products.productList.ProductListViewModel
+import com.test.ui.products.productList.ProductListViewModelImpl
 import com.test.ui.profile.ProfileUseCase
 import com.test.ui.profile.ProfileUseCaseImpl
+import com.test.ui.profile.ProfileViewModel
+import com.test.ui.profile.ProfileViewModelImpl
 import com.test.utils.*
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
@@ -33,7 +37,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 private val viewModelModule = module {
     viewModel { EmptyViewModel() }
-    viewModel<MainViewModel> { MainViewModelImpl(get(), get(), get()) }
+    viewModel<MainViewModel> { MainViewModelImpl(get()) }
+    viewModel<ProfileViewModel> { ProfileViewModelImpl(get()) }
+    viewModel<ProductListViewModel> { ProductListViewModelImpl(get()) }
     viewModel<ProductDetailViewModel> { (args: FragmentDetailProductArgs) ->
         ProductDetailViewModelImpl(args.product, get(), get())
     }

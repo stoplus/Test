@@ -1,4 +1,4 @@
-package com.test.ui.products
+package com.test.ui.products.productList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.test.base.BaseFragment
 import com.test.databinding.FragmentProductListBinding
-import com.test.ui.MainViewModel
 import com.test.utils.setMessage
 import org.jetbrains.anko.support.v4.longToast
 
-class FragmentProductList : BaseFragment<MainViewModel>(){
+class FragmentProductList : BaseFragment<ProductListViewModel>(){
 
     private lateinit var adapterProd: ProductAdapter
     private var bindingNull: FragmentProductListBinding? = null

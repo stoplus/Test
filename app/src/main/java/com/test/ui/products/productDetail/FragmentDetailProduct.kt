@@ -13,7 +13,6 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.databinding.FragmentProductDetailBinding
 import com.test.network.models.api.request.PostReviewRequest
-import com.test.ui.products.RateAdapter
 import com.test.utils.BASE_URL
 import com.test.utils.IMAGE_PREFIX
 import com.test.utils.setMessage
