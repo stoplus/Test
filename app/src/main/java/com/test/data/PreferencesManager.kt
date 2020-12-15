@@ -16,7 +16,7 @@ class PreferencesManager(private val pref: SharedPreferences) {
         pref.edit().putString(TOKEN, token).apply()
     }
 
-    fun getToken() = pref.getString(TOKEN, "")!!
+    fun getToken() = pref.getString(TOKEN, "") ?: ""
 
     fun getProfile(): UserResult {
         val nameUser = pref.getString(NAME_USER, "") ?: ""

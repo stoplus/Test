@@ -1,6 +1,6 @@
 package com.test.ui.login
 
-import androidx.lifecycle.MutableLiveData
+import com.test.data.AuthManager
 import com.test.data.PreferencesManager
 import com.test.network.models.domain.LoginResult
 import com.test.network.ApiInterface
@@ -10,9 +10,6 @@ import com.test.network.models.mapper.toDomain
 import io.reactivex.Single
 
 interface LoginUseCase {
-
-    var isLoggedLiveData: MutableLiveData<Boolean>
-
     fun login(login: String, pass: String): Single<LoginResult>
     fun register(login: String, pass: String): Single<RegisterResult>
     fun isLogged(): Boolean
@@ -21,10 +18,9 @@ interface LoginUseCase {
 
 class LoginUseCaseImpl(
     private val api: ApiInterface,
-    private val prefManager: PreferencesManager
+    private val prefManager: PreferencesManager,
+    private val authManager: AuthManager
 ) : LoginUseCase {
-
-    override var isLoggedLiveData = MutableLiveData<Boolean>()
 
     override fun login(login: String, pass: String): Single<LoginResult> {
         return api.login(login, pass)
@@ -32,7 +28,7 @@ class LoginUseCaseImpl(
                 it.toDomain().apply {
                     if (success) {
                         prefManager.saveToken(token)
-                        isLoggedLiveData.postValue(true)
+                        authManager.isLoggedSubject.onNext(true)
                     }
                 }
             }
@@ -44,7 +40,7 @@ class LoginUseCaseImpl(
                 it.toDomain().apply {
                     if (success) {
                         prefManager.saveToken(token)
-                        isLoggedLiveData.postValue(true)
+                        authManager.isLoggedSubject.onNext(true)
                     }
                 }
             }
@@ -57,6 +53,6 @@ class LoginUseCaseImpl(
     override fun logout() {
         prefManager.saveToken("")
         prefManager.saveProfile(UserResult.emptyModel())
-        isLoggedLiveData.postValue(false)
+        authManager.isLoggedSubject.onNext(false)
     }
 }

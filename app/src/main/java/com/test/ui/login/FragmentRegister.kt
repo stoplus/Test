@@ -13,7 +13,7 @@ import com.test.utils.setMessage
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
-class FragmentRegister : BaseFragment<MainViewModel>() {
+class FragmentRegister : BaseFragment<LoginViewModel>() {
 
     private var bindingNull: FragmentRegisterBinding? = null
     private val binding get() = bindingNull!!

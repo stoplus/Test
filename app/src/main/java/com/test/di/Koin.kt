@@ -7,11 +7,14 @@ import com.ihsanbal.logging.Level
 import com.ihsanbal.logging.LoggingInterceptor
 import com.test.BuildConfig
 import com.test.base.EmptyViewModel
+import com.test.data.AuthManager
 import com.test.data.PreferencesManager
 import com.test.ui.MainViewModel
 import com.test.ui.MainViewModelImpl
 import com.test.ui.login.LoginUseCase
 import com.test.ui.login.LoginUseCaseImpl
+import com.test.ui.login.LoginViewModel
+import com.test.ui.login.LoginViewModelImpl
 import com.test.ui.products.ProductUseCase
 import com.test.ui.products.ProductUseCaseImpl
 import com.test.ui.products.productDetail.FragmentDetailProductArgs
@@ -37,7 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 private val viewModelModule = module {
     viewModel { EmptyViewModel() }
-    viewModel<MainViewModel> { MainViewModelImpl(get()) }
+    viewModel<LoginViewModel> { LoginViewModelImpl(get()) }
+    viewModel<MainViewModel> { MainViewModelImpl(get(), get()) }
     viewModel<ProfileViewModel> { ProfileViewModelImpl(get()) }
     viewModel<ProductListViewModel> { ProductListViewModelImpl(get()) }
     viewModel<ProductDetailViewModel> { (args: FragmentDetailProductArgs) ->
@@ -74,7 +78,7 @@ private val networkModule = module {
 private val dataModule = module {
     single { get<Context>().applicationContext.getSharedPreferences(PREF, Context.MODE_PRIVATE) }
     single { PreferencesManager(get()) }
-//    single { ApiManager(get(), get(), get()) }
+    single { AuthManager() }
     single { OkHttpClient.Builder() }
 }
 
@@ -83,9 +87,8 @@ private val apiModule = module {
 }
 
 private val useCaseModule = module {
-
 //    factory { ProofUseCase(get()) }
-    factory<LoginUseCase> { LoginUseCaseImpl(get(), get()) }
+    factory<LoginUseCase> { LoginUseCaseImpl(get(), get(), get()) }
     factory<ProfileUseCase> { ProfileUseCaseImpl(get()) }
     factory<ProductUseCase> { ProductUseCaseImpl(get(), get()) }
 }

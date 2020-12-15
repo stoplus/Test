@@ -58,10 +58,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
         }
     }
 
-    protected open fun onError(throwable: Throwable) {
-        Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
-    }
-
     private fun showLoading() {
         baseActivity.showLoading()
     }
@@ -73,22 +69,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     fun onBackPressed() {
         activity?.onBackPressed()
     }
-
-//    fun showFragment(fragment: BaseFragment, idContainer: Int, tag: String) {
-//        requireActivity().supportFragmentManager
-//            .beginTransaction()
-//            .replace(idContainer, fragment)
-//            .addToBackStack(tag)
-//            .commit()
-//    }
-//
-//    fun addFragment(fragment: BaseFragment, idContainer: Int, tag: String) {
-//        requireActivity().supportFragmentManager
-//            .beginTransaction()
-//            .add(idContainer, fragment)
-//            .addToBackStack(tag)
-//            .commit()
-//    }
 
     open fun requestPermissionsResult(
         requestCode: Int,

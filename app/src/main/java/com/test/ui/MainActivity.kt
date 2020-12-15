@@ -42,9 +42,8 @@ class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationI
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
+        viewModel.subscribeIsLogin()
         viewModel.isLoggedLiveData.observe(this, {
-            Log.d("ffff" ," viewModel = ${viewModel}" )
-            Log.d("ffff" ," viewModel.isLoggedLiveData = ${viewModel.isLoggedLiveData}" )
             showItemMenu(navigationView, it)
         })
 
