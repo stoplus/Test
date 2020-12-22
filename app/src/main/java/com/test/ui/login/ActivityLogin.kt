@@ -7,15 +7,10 @@ import com.test.base.EmptyViewModel
 import com.test.databinding.ActivityLoginBinding
 import com.test.router.Router
 
-class ActivityLogin : BaseActivity<EmptyViewModel>() {
-
-    lateinit var binding: ActivityLoginBinding
+class ActivityLogin : BaseActivity<EmptyViewModel, ActivityLoginBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        router = Router(this, R.id.loginNavFragment)
+        router = Router(this, R.id.login_nav_fragment)
     }
 }

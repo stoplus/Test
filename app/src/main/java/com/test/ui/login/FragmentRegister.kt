@@ -1,31 +1,16 @@
 package com.test.ui.login
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.test.R
 import com.test.base.BaseFragment
 import com.test.databinding.FragmentRegisterBinding
 import com.test.network.models.domain.RegisterResult
-import com.test.ui.MainViewModel
 import com.test.utils.setMessage
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
-class FragmentRegister : BaseFragment<LoginViewModel>() {
-
-    private var bindingNull: FragmentRegisterBinding? = null
-    private val binding get() = bindingNull!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        bindingNull = FragmentRegisterBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+class FragmentRegister : BaseFragment<LoginViewModel, FragmentRegisterBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +20,7 @@ class FragmentRegister : BaseFragment<LoginViewModel>() {
                 subscribe(viewModel.register(
                     binding.registerLogin.text.toString().trim(),
                     binding.registerPassword.text.toString().trim()
-                ), { enter(it) }, { context?.also { con -> longToast(setMessage(it, con)) } })
+                ), { enter(it) }, { longToast(setMessage(it, mContext)) })
             }
         }
     }
@@ -70,10 +55,5 @@ class FragmentRegister : BaseFragment<LoginViewModel>() {
             valid = false
         }
         return valid
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        bindingNull = null
     }
 }

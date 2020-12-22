@@ -1,7 +1,6 @@
 package com.test.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -14,17 +13,15 @@ import com.test.base.BaseActivity
 import com.test.databinding.ActivityMainBinding
 import com.test.router.Router
 
-class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(),
+    NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawer: DrawerLayout
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val toolbar: Toolbar = findViewById(R.id.catalog_toolbar)
+        val toolbar: Toolbar = binding.includeToolbar.catalogToolbar
         setSupportActionBar(toolbar)
         supportActionBar?.also { it.setDisplayShowTitleEnabled(false) }
 
@@ -53,7 +50,7 @@ class MainActivity : BaseActivity<MainViewModel>(), NavigationView.OnNavigationI
         router = Router(this, R.id.container_for_fragments)
     }
 
-    private fun showItemMenu(navigationView: NavigationView, shown: Boolean){
+    private fun showItemMenu(navigationView: NavigationView, shown: Boolean) {
         navigationView.menu.findItem(R.id.nav_login).isVisible = !shown
         navigationView.menu.findItem(R.id.nav_profile).isVisible = shown
         navigationView.menu.findItem(R.id.nav_logout).isVisible = shown

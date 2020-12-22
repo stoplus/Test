@@ -8,9 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,30 +17,18 @@ import com.test.R
 import com.test.base.BaseFragment
 import com.test.databinding.FragmentProfileBinding
 import com.test.network.models.domain.UserResult
-import com.test.ui.MainViewModel
 import com.test.ui.login.ActivityLogin
 import com.test.utils.withAllPermissions
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
 
-class FragmentProfile : BaseFragment<ProfileViewModel>() {
+class FragmentProfile : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     private var currentPhotoPath = ""
-    private var bindingNull: FragmentProfileBinding? = null
-    private val binding get() = bindingNull!!
 
     companion object {
         const val REQUEST_CODE_PHOTO = 100
         const val REQUEST_CODE_STORAGE = 222
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        bindingNull = FragmentProfileBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,40 +43,38 @@ class FragmentProfile : BaseFragment<ProfileViewModel>() {
     private fun setDataUser() {
         val user = viewModel.getProfile()
         val uri: Uri = Uri.parse(user.photo)
-        context?.also {
-            Glide.with(it).load(uri)
-                .fitCenter()
-                .circleCrop()
-                .error(R.drawable.default_photo)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(binding.profilePhoto)
-        }
+        Glide.with(mContext).load(uri)
+            .fitCenter()
+            .circleCrop()
+            .error(R.drawable.default_photo)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .into(binding.profilePhoto)
+
         binding.profileName.setText(user.firstName)
         binding.profileSurname.setText(user.lastName)
     }
 
     private fun choosePathForPhoto() {
         //choose were we get image
-        context?.also {
-            val alertDialog = AlertDialog.Builder(it)
-            alertDialog.setTitle(resources.getString(R.string.dialog_choose_title))
-            alertDialog.setMessage(resources.getString(R.string.dialog_choose_text))
-                .setIcon(R.drawable.question)
-                .setNegativeButton(resources.getString(R.string.dialog_choose_gallery_btn)) { dialog, _ ->
-                    getImageFromGallery()
-                    dialog.dismiss()
-                }
-                .setPositiveButton(resources.getString(R.string.dialog_choose_camera_btn)) { dialog, _ ->
-                    makePhoto()
-                    dialog.dismiss()
-                }
-            alertDialog.show()
-        }
+        val alertDialog = AlertDialog.Builder(mContext)
+        alertDialog.setTitle(resources.getString(R.string.dialog_choose_title))
+        alertDialog.setMessage(resources.getString(R.string.dialog_choose_text))
+            .setIcon(R.drawable.question)
+            .setNegativeButton(resources.getString(R.string.dialog_choose_gallery_btn)) { dialog, _ ->
+                getImageFromGallery()
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.dialog_choose_camera_btn)) { dialog, _ ->
+                makePhoto()
+                dialog.dismiss()
+            }
+        alertDialog.show()
     }
 
     private fun saveProfile() {
         val user = viewModel.getProfile()
-        if (binding.profileName.text.toString().isEmpty() || binding.profileSurname.text.toString().isEmpty()
+        if (binding.profileName.text.toString().isEmpty()
+            || binding.profileSurname.text.toString().isEmpty()
             || (currentPhotoPath.isEmpty() && user.photo.isEmpty())
         ) {
             toast(resources.getString(R.string.profile_error_saved))
@@ -116,7 +100,10 @@ class FragmentProfile : BaseFragment<ProfileViewModel>() {
     }
 
     private fun getImageFromGallery() =
-        withAllPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE) {
+        withAllPermissions(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) {
             startActivityForResult(
                 Intent(Intent.ACTION_PICK).apply { type = "image/*" },
                 REQUEST_CODE_STORAGE
@@ -166,14 +153,13 @@ class FragmentProfile : BaseFragment<ProfileViewModel>() {
     }
 
     private fun showImage() {
-        context?.also {
-            Glide.with(it).load(currentPhotoPath)
-                .fitCenter()
-                .circleCrop()
-                .error(R.drawable.default_photo)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(binding.profilePhoto)
-        }
+        Glide.with(mContext)
+            .load(currentPhotoPath)
+            .fitCenter()
+            .circleCrop()
+            .error(R.drawable.default_photo)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .into(binding.profilePhoto)
     }
 
     private fun getRealPathFromURI(contentURI: Uri): String {
@@ -188,10 +174,5 @@ class FragmentProfile : BaseFragment<ProfileViewModel>() {
             cursor.close()
         }
         return result
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        bindingNull = null
     }
 }

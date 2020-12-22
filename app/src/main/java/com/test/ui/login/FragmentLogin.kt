@@ -1,31 +1,16 @@
 package com.test.ui.login
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.test.R
 import com.test.base.BaseFragment
 import com.test.databinding.FragmentLoginBinding
 import com.test.network.models.domain.LoginResult
-import com.test.ui.MainViewModel
 import com.test.utils.setMessage
 import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 
-class FragmentLogin : BaseFragment<LoginViewModel>() {
-
-    private var bindingNull: FragmentLoginBinding? = null
-    private val binding get() = bindingNull!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        bindingNull = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+class FragmentLogin : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,7 +29,7 @@ class FragmentLogin : BaseFragment<LoginViewModel>() {
                 binding.loginPassword.text.toString().trim()
             ),
                 { enter(it) },
-                { context?.also { con -> longToast(setMessage(it, con)) } }
+                { longToast(setMessage(it, mContext)) }
             )
         }
     }
@@ -71,10 +56,5 @@ class FragmentLogin : BaseFragment<LoginViewModel>() {
             valid = false
         }
         return valid
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        bindingNull = null
     }
 }

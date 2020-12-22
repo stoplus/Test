@@ -2,9 +2,7 @@ package com.test.ui.products.productDetail
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -22,34 +20,18 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import java.util.*
 
-class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
+class FragmentDetailProduct : BaseFragment<ProductDetailViewModel, FragmentProductDetailBinding>() {
 
     private var currentRate: Int = 0
-    private var bindingNull: FragmentProductDetailBinding? = null
-    private val binding get() = bindingNull!!
 
     override fun getParameters(): ParametersDefinition = {
         parametersOf(FragmentDetailProductArgs.fromBundle(requireArguments()))
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        bindingNull = FragmentProductDetailBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //for updating scope
-        binding.includeMyComment.commentBtn.setOnClickListener { tryPostReview() }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.includeMyComment.commentBtn.setOnClickListener { tryPostReview() }
         getAllReviews(false)//get all reviews from api
 
         viewModel.productLiveData.observe(viewLifecycleOwner, { productModel ->
@@ -92,7 +74,7 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
                         500
                     )
                 }
-            }, { context?.also { con -> longToast(setMessage(it, con)) } })
+            }, { longToast(setMessage(it, mContext)) })
     }
 
     private fun tryPostReview() {
@@ -107,7 +89,7 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
     }
 
     private fun showDialog() {
-        val alertDialog = AlertDialog.Builder(binding.root.context)
+        val alertDialog = AlertDialog.Builder(mContext)
         alertDialog.setTitle(R.string.comment_error_dialog_title)
         alertDialog.setMessage(R.string.comment_error_sing_in)
         alertDialog.setNegativeButton(android.R.string.cancel, null)
@@ -117,7 +99,10 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
 
     private fun postReview() {
         subscribe(viewModel.postReview(
-            PostReviewRequest(rate = currentRate, text = binding.includeMyComment.comment.text.toString())
+            PostReviewRequest(
+                rate = currentRate,
+                text = binding.includeMyComment.comment.text.toString()
+            )
         ), {
             if (it.success) {
                 getAllReviews(true)
@@ -130,7 +115,7 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
                 showDialog()
                 viewModel.logout()
             } else {
-                context?.also { con -> longToast(setMessage(it, con)) }
+                longToast(setMessage(it, mContext))
             }
         })
     }
@@ -149,16 +134,11 @@ class FragmentDetailProduct : BaseFragment<ProductDetailViewModel>() {
         val image3 = if (s3) R.drawable.ic_star else R.drawable.ic_star_border
         val image4 = if (s4) R.drawable.ic_star else R.drawable.ic_star_border
         val image5 = if (s5) R.drawable.ic_star else R.drawable.ic_star_border
-        binding.includeMyComment.starsInclude.star1.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_star))
-        binding.includeMyComment.starsInclude.star2.setImageDrawable(ContextCompat.getDrawable(binding.root.context, image2))
-        binding.includeMyComment.starsInclude.star3.setImageDrawable(ContextCompat.getDrawable(binding.root.context, image3))
-        binding.includeMyComment.starsInclude.star4.setImageDrawable(ContextCompat.getDrawable(binding.root.context, image4))
-        binding.includeMyComment.starsInclude.star5.setImageDrawable(ContextCompat.getDrawable(binding.root.context, image5))
+        binding.includeMyComment.starsInclude.star1.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_star))
+        binding.includeMyComment.starsInclude.star2.setImageDrawable(ContextCompat.getDrawable(mContext, image2))
+        binding.includeMyComment.starsInclude.star3.setImageDrawable(ContextCompat.getDrawable(mContext, image3))
+        binding.includeMyComment.starsInclude.star4.setImageDrawable(ContextCompat.getDrawable(mContext, image4))
+        binding.includeMyComment.starsInclude.star5.setImageDrawable(ContextCompat.getDrawable(mContext, image5))
         currentRate = rate
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        bindingNull = null
     }
 }
