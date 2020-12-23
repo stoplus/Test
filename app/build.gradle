@@ -81,4 +81,6 @@ dependencies {
     //autoDispose
     implementation 'com.uber.autodispose:autodispose-ktx:1.2.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.2.0'
+
+    implementation ('commons-io:commons-io:2.8.0')
 }

@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,8 +21,10 @@ import com.test.databinding.FragmentProfileBinding
 import com.test.network.models.domain.UserResult
 import com.test.ui.login.ActivityLogin
 import com.test.utils.withAllPermissions
+import org.apache.commons.io.FileUtils
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
+import java.io.FileOutputStream
 
 class FragmentProfile : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
@@ -117,7 +121,8 @@ class FragmentProfile : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             currentPhotoPath = "file:${file.absolutePath}"
             startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                 putExtra(
-                    MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+                    MediaStore.EXTRA_OUTPUT,
+                    FileProvider.getUriForFile(
                         activity,
                         BuildConfig.APPLICATION_ID + ".provider",
                         file
@@ -137,11 +142,7 @@ class FragmentProfile : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
                         val uri = if (Build.VERSION.SDK_INT < 24) {
                             it
                         } else {
-                            val photoFile = File(getRealPathFromURI(it))
-                            FileProvider.getUriForFile(
-                                binding.root.context, BuildConfig.APPLICATION_ID + ".provider",
-                                photoFile
-                            )
+                            getRealPathURI(it)
                         }
 
                         currentPhotoPath = uri.toString()
@@ -162,17 +163,37 @@ class FragmentProfile : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             .into(binding.profilePhoto)
     }
 
-    private fun getRealPathFromURI(contentURI: Uri): String {
-        var result = ""
-        val cursor = activity?.contentResolver?.query(contentURI, null, null, null, null)
-        if (cursor == null) { //checking
-            contentURI.path?.also { result = it }
+    private fun getRealPathURI(contentURI: Uri): Uri {
+        val bitmap = getBitmapFromUri(contentURI)
+
+        val folder = File(mContext.filesDir, "Images")
+        folder.mkdirs()
+        FileUtils.cleanDirectory(folder)
+
+        val file = File.createTempFile("photo", ".jpg", folder)
+        currentPhotoPath = "file:${file.absolutePath}"
+
+        val fos = FileOutputStream(file)
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fos)
+        fos.flush()
+        fos.close()
+
+        return FileProvider.getUriForFile(
+            binding.root.context,
+            BuildConfig.APPLICATION_ID + ".provider",
+            file
+        )
+    }
+
+    private fun getBitmapFromUri(uri: Uri, options: BitmapFactory.Options? = null): Bitmap? {
+        val parcelFileDescriptor = mContext.contentResolver.openFileDescriptor(uri, "r")
+        val fileDescriptor = parcelFileDescriptor?.fileDescriptor
+        val image: Bitmap? = if (options != null) {
+            BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options)
         } else {
-            cursor.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-            result = cursor.getString(idx)
-            cursor.close()
+            BitmapFactory.decodeFileDescriptor(fileDescriptor)
         }
-        return result
+        parcelFileDescriptor?.close()
+        return image
     }
 }
